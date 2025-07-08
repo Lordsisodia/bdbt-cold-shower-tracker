@@ -1,0 +1,44 @@
+{
+  "name": "BDBT Cold Shower Challenge",
+  "short_name": "BDBT Tracker",
+  "description": "Track your cold shower challenge and build discipline - 30 days to better health, wealth & happiness",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f0f9ff",
+  "theme_color": "#1E3A8A",
+  "categories": ["health", "fitness", "lifestyle", "productivity"],
+  "lang": "en-US",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Log Cold Shower",
+      "short_name": "Log Shower",
+      "description": "Quickly log today's cold shower",
+      "url": "/?action=log",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "View Progress",
+      "short_name": "Progress", 
+      "description": "Check your streak and progress",
+      "url": "/?action=progress",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "prefer_related_applications": false
+}

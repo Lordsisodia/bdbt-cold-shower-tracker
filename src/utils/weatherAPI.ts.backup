@@ -1,0 +1,187 @@
+// Weather API integration for cold shower difficulty rating
+// Requires API key from OpenWeatherMap
+
+interface WeatherData {
+  temperature: number;
+  feelsLike: number;
+  humidity: number;
+  description: string;
+  location: string;
+}
+
+interface ColdShowerDifficulty {
+  level: 'Easy' | 'Moderate' | 'Hard' | 'Extreme';
+  color: string;
+  description: string;
+  tips: string[];
+  bonusPoints: number;
+}
+
+const WEATHER_API_KEY = (import.meta as any).env?.VITE_OPENWEATHER_API_KEY;
+
+export const getCurrentWeather = async (lat: number, lon: number): Promise<WeatherData | null> => {
+  if (!WEATHER_API_KEY) {
+    console.warn('OpenWeatherMap API key not found. Set VITE_OPENWEATHER_API_KEY environment variable.');
+    return null;
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`
+    );
+
+    if (!response.ok) {
+      throw new Error('Weather API request failed');
+    }
+
+    const data = await response.json();
+
+    return {
+      temperature: Math.round(data.main.temp),
+      feelsLike: Math.round(data.main.feels_like),
+      humidity: data.main.humidity,
+      description: data.weather[0].description,
+      location: data.name
+    };
+  } catch (error) {
+    console.error('Failed to fetch weather data:', error);
+    return null;
+  }
+};
+
+export const getWeatherByCity = async (city: string): Promise<WeatherData | null> => {
+  if (!WEATHER_API_KEY) {
+    console.warn('OpenWeatherMap API key not found. Set VITE_OPENWEATHER_API_KEY environment variable.');
+    return null;
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${WEATHER_API_KEY}&units=metric`
+    );
+
+    if (!response.ok) {
+      throw new Error('Weather API request failed');
+    }
+
+    const data = await response.json();
+
+    return {
+      temperature: Math.round(data.main.temp),
+      feelsLike: Math.round(data.main.feels_like),
+      humidity: data.main.humidity,
+      description: data.weather[0].description,
+      location: data.name
+    };
+  } catch (error) {
+    console.error('Failed to fetch weather data:', error);
+    return null;
+  }
+};
+
+export const calculateColdShowerDifficulty = (weather: WeatherData): ColdShowerDifficulty => {
+  const { temperature, feelsLike, humidity } = weather;
+  
+  // Calculate difficulty based on outdoor temperature and conditions
+  // Colder outdoor temp = higher difficulty (psychological effect)
+  // Higher humidity = slightly easier (less heat loss)
+  
+  let difficultyScore = 0;
+  
+  // Temperature factor (most important)
+  if (feelsLike >= 25) difficultyScore += 1; // Hot day
+  else if (feelsLike >= 15) difficultyScore += 2; // Mild day
+  else if (feelsLike >= 5) difficultyScore += 3; // Cool day
+  else if (feelsLike >= -5) difficultyScore += 4; // Cold day
+  else difficultyScore += 5; // Very cold day
+  
+  // Humidity factor (minor)
+  if (humidity > 80) difficultyScore -= 0.5; // High humidity makes it feel easier
+  else if (humidity < 30) difficultyScore += 0.5; // Low humidity makes it feel harder
+  
+  // Determine difficulty level
+  if (difficultyScore <= 1.5) {
+    return {
+      level: 'Easy',
+      color: 'text-green-600',
+      description: 'Perfect weather for cold showers! The heat outside makes the cold feel refreshing.',
+      tips: [
+        'Great day to extend your cold shower duration',
+        'Try going a bit colder than usual',
+        'Perfect weather to build your streak'
+      ],
+      bonusPoints: 5
+    };
+  } else if (difficultyScore <= 2.5) {
+    return {
+      level: 'Moderate',
+      color: 'text-blue-600',
+      description: 'Good conditions for your cold shower practice.',
+      tips: [
+        'Standard cold shower duration should feel manageable',
+        'Focus on your breathing technique',
+        'Maintain your regular routine'
+      ],
+      bonusPoints: 10
+    };
+  } else if (difficultyScore <= 4) {
+    return {
+      level: 'Hard',
+      color: 'text-orange-600',
+      description: 'Challenging conditions - the cold outside makes the shower feel even more intense!',
+      tips: [
+        'Warm up your bathroom first',
+        'Start with lukewarm water and gradually decrease',
+        'Have warm clothes ready for after',
+        'Focus on the mental benefits you\'ll gain'
+      ],
+      bonusPoints: 20
+    };
+  } else {
+    return {
+      level: 'Extreme',
+      color: 'text-red-600',
+      description: 'Hardcore conditions! You\'re showing incredible mental toughness today.',
+      tips: [
+        'Consider a shorter duration if needed',
+        'Warm up thoroughly before and after',
+        'Breathe deeply and stay present',
+        'Remember: this builds serious character!',
+        'Have emergency warmth plan ready'
+      ],
+      bonusPoints: 50
+    };
+  }
+};
+
+export const getCurrentLocation = (): Promise<{ lat: number; lon: number }> => {
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) {
+      reject(new Error('Geolocation is not supported by this browser'));
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        resolve({
+          lat: position.coords.latitude,
+          lon: position.coords.longitude
+        });
+      },
+      (error) => {
+        reject(error);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000 // 5 minutes
+      }
+    );
+  });
+};
+
+// API Requirements Note:
+// To use this weather integration, you need:
+// 1. OpenWeatherMap API key (free tier available)
+// 2. Set VITE_OPENWEATHER_API_KEY in your .env file
+// 3. Sign up at: https://openweathermap.org/api
