@@ -24,9 +24,9 @@
 - Email campaign system
 
 ## Adaptive Tasks
-- AT1: Create tests for configuration files
+- AT1: Create tests for Tmux-Orchestrator and UI components
 - AD1: Document new components and APIs
-- AO1: Bundle size optimization
+- AO1: Bundle size and performance optimization
 
 ## Dependencies
 1. F1 -> U1 -> A1
