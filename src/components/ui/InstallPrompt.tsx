@@ -1,7 +1,7 @@
-import React from 'react';
 import { Download, X } from 'lucide-react';
-import { Button, Card } from './';
+import React from 'react';
 import { usePWA } from '../../hooks/usePWA';
+import { Button, Card } from './';
 
 interface InstallPromptProps {
   onDismiss: () => void;

@@ -1,5 +1,5 @@
 // Test script for analytics integration
-import { analyticsService, trackPageView, trackTipView, trackTipDownload, trackSearch } from '../services/analyticsService';
+import { analyticsService, trackPageView, trackSearch, trackTipDownload, trackTipView } from '../services/analyticsService';
 
 export async function testAnalyticsIntegration() {
   console.log('🧪 Testing Analytics Integration...');

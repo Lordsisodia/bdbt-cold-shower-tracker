@@ -1,9 +1,9 @@
+import { Bell, Database, Download, FileText, LogOut, Settings, Shield, User } from 'lucide-react';
 import React, { useState } from 'react';
-import { User, Settings, LogOut, Shield, Bell, Download, FileText, Database } from 'lucide-react';
-import { Button, Card } from '../ui';
 import { useAuth } from '../../hooks/useAuth';
 import { useSupabaseData } from '../../hooks/useSupabaseData';
 import { exportData } from '../../utils/dataExport';
+import { Button, Card } from '../ui';
 
 interface UserProfileProps {
   isOpen: boolean;

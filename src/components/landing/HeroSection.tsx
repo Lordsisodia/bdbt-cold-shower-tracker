@@ -1,5 +1,5 @@
+import { ArrowRight, Rocket, Sparkles, Target, TrendingUp } from 'lucide-react';
 import React from 'react';
-import { ArrowRight, Sparkles, Rocket, Target, TrendingUp } from 'lucide-react';
 
 const HeroSection: React.FC = () => {
   return (

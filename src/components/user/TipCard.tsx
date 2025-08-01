@@ -1,10 +1,10 @@
+import { formatDistanceToNow } from 'date-fns';
+import { Bookmark, Clock, Eye, Heart, Share2 } from 'lucide-react';
 import React from 'react';
 import { Tip } from '../../types/tip';
-import { Card, CardContent, CardFooter, CardHeader } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
-import { Clock, Eye, Heart, Share2, Bookmark } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
+import { Card, CardContent, CardFooter, CardHeader } from '../ui/card';
 
 interface TipCardProps {
   tip: Tip;

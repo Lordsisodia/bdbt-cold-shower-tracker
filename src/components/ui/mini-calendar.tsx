@@ -1,13 +1,8 @@
-import * as React from "react";
 import {
-  format,
-  addWeeks,
-  subWeeks,
-  eachDayOfInterval,
-  startOfWeek,
-  endOfWeek,
+    addWeeks, eachDayOfInterval, endOfWeek, format, startOfWeek, subWeeks
 } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import * as React from "react";
 import { cn } from "../../lib/utils";
 import { Button } from "./Button";
 

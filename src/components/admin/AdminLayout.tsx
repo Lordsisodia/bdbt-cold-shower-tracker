@@ -1,17 +1,10 @@
-import React from 'react';
-import { Link, useLocation, Outlet } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Plus, 
-  Calendar, 
-  FileText, 
-  Settings,
-  Users,
-  BarChart3,
-  LogOut,
-  ChevronLeft,
-  ChevronRight
+import {
+    BarChart3, Calendar, ChevronLeft,
+    ChevronRight, FileText, LayoutDashboard, LogOut, Plus, Settings,
+    Users
 } from 'lucide-react';
+import React from 'react';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
 const AdminLayout: React.FC = () => {
   const location = useLocation();

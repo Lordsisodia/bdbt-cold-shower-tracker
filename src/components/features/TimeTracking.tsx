@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Clock, Play, Pause, Square, Timer, TrendingUp, Target, Award } from 'lucide-react';
+import { Award, Clock, Pause, Play, Square, Target, Timer, TrendingUp } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card } from '../ui';
 
 interface TimeTrackingProps {

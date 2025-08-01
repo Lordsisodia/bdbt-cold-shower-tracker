@@ -1,5 +1,5 @@
-import React from 'react';
 import { ArrowRight, CheckCircle, Sparkles } from 'lucide-react';
+import React from 'react';
 
 const CTASection: React.FC = () => {
   const benefits = [

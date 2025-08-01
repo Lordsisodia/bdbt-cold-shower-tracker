@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { ArrowRight, Menu, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ArrowRight } from 'lucide-react';
 import GetStartedModal from '../modals/GetStartedModal';
 
 const Navigation: React.FC = () => {

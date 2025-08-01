@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { BarChart3, Calendar as CalendarIcon, Moon, Plus, Snowflake, Sun } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { ActivityCard, Goal, Metric } from './ui/activity-card';
 import { Calendar } from './ui/mini-calendar';
-import { Plus, Snowflake, Sun, Moon, BarChart3, Calendar as CalendarIcon } from 'lucide-react';
 
 interface ColdShowerEntry {
   date: string;

@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar } from './Calendar';
-import { ProgressStats } from './ProgressStats';
-import { HabitAnalytics } from './features/HabitAnalytics';
-import { SocialSharing } from './features/SocialSharing';
 import { ChallengeDurations } from './features/ChallengeDurations';
+import { HabitAnalytics } from './features/HabitAnalytics';
 import { HabitStacking } from './features/HabitStacking';
-import { TimeTracking } from './features/TimeTracking';
 import { MoodTracking } from './features/MoodTracking';
-import { Card, ThemeToggle, Button } from './ui';
+import { SocialSharing } from './features/SocialSharing';
+import { TimeTracking } from './features/TimeTracking';
+import { ProgressStats } from './ProgressStats';
+import { Button, Card, ThemeToggle } from './ui';
 
 interface TrackedDay {
   date: string;

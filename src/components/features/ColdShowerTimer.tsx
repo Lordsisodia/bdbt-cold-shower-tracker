@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Play, Pause, Square, Volume2, VolumeX, RotateCcw } from 'lucide-react';
+import { Pause, Play, RotateCcw, Square, Volume2, VolumeX } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Card } from '../ui';
 
 interface ColdShowerTimerProps {

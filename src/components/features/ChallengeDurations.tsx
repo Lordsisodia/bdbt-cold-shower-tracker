@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Calendar, Target, Trophy, Clock, CheckCircle, Star } from 'lucide-react';
+import { Calendar, CheckCircle, Clock, Star, Target, Trophy } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card } from '../ui';
 
 interface ChallengeDurationsProps {

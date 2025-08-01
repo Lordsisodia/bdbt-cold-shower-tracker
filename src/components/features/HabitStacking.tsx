@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Link, Target, Clock, CheckCircle, Trash2, Edit3, ChevronRight } from 'lucide-react';
+import { CheckCircle, ChevronRight, Clock, Edit3, Link, Plus, Target, Trash2 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card } from '../ui';
 
 interface HabitStackingProps {

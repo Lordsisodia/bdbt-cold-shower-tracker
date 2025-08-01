@@ -1,4 +1,4 @@
-import { Activity, ArrowUpRight, Plus, Target, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
+import { Activity, ArrowUpRight, CheckCircle2, ChevronDown, ChevronUp, Plus, Target } from "lucide-react";
 import { useState } from "react";
 import { cn } from "../../lib/utils";
 

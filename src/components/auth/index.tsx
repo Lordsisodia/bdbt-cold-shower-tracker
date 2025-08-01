@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Button } from '../ui';
+import { Button, Card } from '../ui';
 
 interface AuthModalProps {
   isOpen: boolean;

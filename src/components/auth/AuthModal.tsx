@@ -1,7 +1,7 @@
+import { Chrome, Github, Lock, Mail, User, X } from 'lucide-react';
 import React, { useState } from 'react';
-import { X, Mail, Lock, User, Github, Chrome } from 'lucide-react';
-import { Button, Card } from '../ui';
 import { useAuth } from '../../contexts/AuthContext';
+import { Button, Card } from '../ui';
 
 interface AuthModalProps {
   isOpen: boolean;

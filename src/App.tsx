@@ -1,10 +1,10 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { lazy, Suspense, useEffect } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import { AuthProvider } from './contexts/AuthContext';
-import { useEffect, Suspense, lazy } from 'react';
-import { trackPageView } from './services/analyticsService';
-import { CustomToaster, LoadingSpinner } from './components/ui';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import ProtectedRoute, { GuestRoute } from './components/auth/ProtectedRoute';
+import { CustomToaster, LoadingSpinner } from './components/ui';
+import { AuthProvider } from './contexts/AuthContext';
+import { trackPageView } from './services/analyticsService';
 
 // Critical pages that should load immediately
 import LandingPage from './pages/LandingPage';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { supabase } from '../../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { supabase } from '../../lib/supabase';
 
 export const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');

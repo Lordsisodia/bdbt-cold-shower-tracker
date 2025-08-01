@@ -1,5 +1,5 @@
+import { Calendar, Clock, Search, Star, Tag, X } from 'lucide-react';
 import React, { useState } from 'react';
-import { X, Search, Calendar, Clock, Star, Tag } from 'lucide-react';
 import { SearchFilters } from '../../services/searchService';
 
 interface AdvancedSearchModalProps {

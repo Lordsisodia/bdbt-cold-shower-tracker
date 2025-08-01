@@ -1,4 +1,3 @@
-import { VariantProps } from 'class-variance-authority';
 
 // Base component props that all components can extend
 export interface BaseComponentProps {

@@ -1,5 +1,5 @@
+import { ArrowRight, BookOpen, HeartHandshake, Shield, Star, Target, TrendingUp, Users, Zap } from 'lucide-react';
 import React from 'react';
-import { Target, Users, TrendingUp, Star, Zap, Shield, BookOpen, HeartHandshake, ArrowRight } from 'lucide-react';
 
 const FeaturesGrid: React.FC = () => {
   const mainFeatures = [

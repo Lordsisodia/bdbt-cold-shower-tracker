@@ -1,5 +1,5 @@
+import { ArrowRight, CheckCircle, Loader, Star, Target, Trophy, Users, X } from 'lucide-react';
 import React, { useState } from 'react';
-import { X, ArrowRight, CheckCircle, Star, Users, Trophy, Target, Loader } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 interface GetStartedModalProps {

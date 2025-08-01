@@ -1,5 +1,5 @@
-import React from 'react';
 import { Compass, Heart, Lightbulb, Trophy } from 'lucide-react';
+import React from 'react';
 
 const MissionSection: React.FC = () => {
   const values = [

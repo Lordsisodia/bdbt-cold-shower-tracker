@@ -1,5 +1,5 @@
+import { Award, Quote, Star, Target, TrendingUp, Users } from 'lucide-react';
 import React from 'react';
-import { Quote, Star, Award, Users, TrendingUp, Target } from 'lucide-react';
 
 const SuccessStories: React.FC = () => {
   const stories = [

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { BarChart, TrendingUp, Calendar, Clock, Target, Flame, Award } from 'lucide-react';
-import { Card, Button } from '../ui';
+import { Award, BarChart, Calendar, Clock, Flame, Target, TrendingUp } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Button, Card } from '../ui';
 
 interface LocalTrackedDay {
   date: string;

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Palette, ExternalLink, CheckCircle, AlertCircle, Loader } from 'lucide-react';
+import { AlertCircle, CheckCircle, ExternalLink, Loader, Palette } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { canvaService } from '../../services/canvaIntegration';
 
 interface CanvaAuthButtonProps {

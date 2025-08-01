@@ -1,18 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { tipsDatabaseService, DatabaseTip } from '../../services/tipsDatabaseService';
-import { 
-  ArrowRight, 
-  Clock, 
-  Eye, 
-  Download, 
-  Star, 
-  Sparkles,
-  TrendingUp,
-  Filter,
-  Search,
-  Loader
+import {
+    ArrowRight,
+    Clock, Download, Eye, Filter, Loader, Search, Sparkles, Star, TrendingUp
 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { DatabaseTip, tipsDatabaseService } from '../../services/tipsDatabaseService';
 
 interface PublishedTipsSectionProps {
   className?: string;

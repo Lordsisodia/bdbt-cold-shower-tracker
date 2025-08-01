@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar } from './Calendar';
 import { ProgressStats } from './ProgressStats';
 import { Card, ThemeToggle } from './ui';

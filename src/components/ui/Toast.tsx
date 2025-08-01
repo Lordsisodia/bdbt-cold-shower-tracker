@@ -1,5 +1,5 @@
+import { AlertCircle, CheckCircle, Info, XCircle } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
-import { CheckCircle, XCircle, AlertCircle, Info } from 'lucide-react';
 
 // Toast component with custom styling
 export const CustomToaster = () => {

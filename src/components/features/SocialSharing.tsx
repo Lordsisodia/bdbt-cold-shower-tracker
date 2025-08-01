@@ -1,5 +1,5 @@
+import { Download, Facebook, Flame, Instagram, Link, Share2, Target, Trophy, Twitter } from 'lucide-react';
 import React, { useState } from 'react';
-import { Share2, Twitter, Facebook, Instagram, Link, Download, Trophy, Flame, Target } from 'lucide-react';
 import { Button, Card } from '../ui';
 
 interface SocialSharingProps {
