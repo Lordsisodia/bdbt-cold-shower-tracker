@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Modal } from '../../components/ui/Modal';
-import { Toast } from '../../components/ui/Toast';
+import { showToast } from '../../components/ui/Toast';
 
 interface User {
   id: string;
@@ -149,7 +149,6 @@ export const UserManagement: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [showUserDetail, setShowUserDetail] = useState(false);
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   
   const [filters, setFilters] = useState<UserFilters>({
     subscription: 'all',
@@ -190,7 +189,7 @@ export const UserManagement: React.FC = () => {
       
       setUsers(mockUsers);
     } catch (error) {
-      setToast({ message: 'Failed to load users', type: 'error' });
+      showToast('Failed to load users', 'error');
     } finally {
       setLoading(false);
     }
@@ -274,20 +273,20 @@ export const UserManagement: React.FC = () => {
         a.click();
       }
       
-      setToast({ message: 'Users exported successfully', type: 'success' });
+      showToast('Users exported successfully', 'success');
     } catch (error) {
-      setToast({ message: 'Failed to export users', type: 'error' });
+      showToast('Failed to export users', 'error');
     }
   };
 
   const handleUpdateUser = async (userId: string, updates: any) => {
     try {
       // API call would go here
-      setToast({ message: 'User updated successfully', type: 'success' });
+      showToast('User updated successfully', 'success');
       await loadUsers();
       setShowUserDetail(false);
     } catch (error) {
-      setToast({ message: 'Failed to update user', type: 'error' });
+      showToast('Failed to update user', 'error');
     }
   };
 
@@ -507,14 +506,6 @@ export const UserManagement: React.FC = () => {
         onUpdate={handleUpdateUser}
       />
 
-      {/* Toast */}
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
     </div>
   );
 };

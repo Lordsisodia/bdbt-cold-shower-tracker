@@ -1,6 +1,6 @@
 import { AuthError, Session, User } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../../lib/supabase';
 
 interface AuthState {
   user: User | null;
