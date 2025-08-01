@@ -1,3 +1,4 @@
+import { supabase } from '../lib/supabase';
 import { AutomatedTipGenerationService } from '../services/automatedTipGeneration';
 import { EmailCampaignService } from '../services/emailCampaignService';
 

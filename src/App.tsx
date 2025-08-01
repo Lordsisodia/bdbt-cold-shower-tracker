@@ -21,6 +21,9 @@ const PartnershipPage = lazy(() => import('./pages/PartnershipPage'));
 const TipsTemplatePreview = lazy(() => import('./pages/TipsTemplatePreview'));
 const SimpleTipGenerator = lazy(() => import('./components/tips/SimpleTipGenerator'));
 
+// Admin routes
+const AdminRoutes = lazy(() => import('./routes/AdminRoutes'));
+
 // Legal pages
 const TermsOfServicePage = lazy(() => import('./pages/TermsOfServicePage'));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage'));
@@ -108,19 +111,13 @@ function App() {
               <Route path="/unauthorized" element={<UnauthorizedPage />} />
               
               {/* Protected Admin SaaS Application */}
-              <Route path="/admin" element={
-                <ProtectedRoute requireAuth={true}>
-                  <AdminLayout />
+              <Route path="/admin/*" element={
+                <ProtectedRoute requireAuth={true} requiredRole="admin">
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <AdminRoutes />
+                  </Suspense>
                 </ProtectedRoute>
-              }>
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="create" element={<EnhancedTipCreator />} />
-                <Route path="calendar" element={<ContentCalendar />} />
-                <Route path="templates" element={<TipsTemplatePreview />} />
-                <Route path="analytics" element={<AnalyticsPage />} />
-                <Route path="email-stats" element={<EmailStatsPage />} />
-                <Route path="settings" element={<SettingsPage />} />
-              </Route>
+              } />
             </Routes>
           </Suspense>
         </Router>

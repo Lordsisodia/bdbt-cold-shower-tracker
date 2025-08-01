@@ -2,9 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
+import { initializeAutomation } from './scripts/initializeAutomation';
 
 // Only log in development
 const isDevelopment = import.meta.env.DEV;
+
+// Initialize automation services
+if (!isDevelopment || import.meta.env.VITE_ENABLE_AUTOMATION === 'true') {
+  initializeAutomation().catch(console.error);
+}
 
 if (isDevelopment) {
   console.log('main.tsx loaded - React version:', React.version);
