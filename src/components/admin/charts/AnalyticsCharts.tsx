@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  LineChart, Line, BarChart, Bar, PieChart, Pie,
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-  ResponsiveContainer, Cell
-} from 'recharts';
+import { Bar, BarChart, CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 interface ChartData {
   name: string;

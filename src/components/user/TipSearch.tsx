@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { Search, X } from 'lucide-react';
+import React, { useState } from 'react';
 import { useDebounce } from '../../hooks/utils/useDebounce';
 
 interface TipSearchProps {

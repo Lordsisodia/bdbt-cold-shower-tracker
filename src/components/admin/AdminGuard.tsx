@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
+import { toast } from 'react-hot-toast';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { LoadingOverlay } from '../ui/LoadingOverlay';
-import { toast } from 'react-hot-toast';
 
 interface AdminGuardProps {
   children: React.ReactNode;

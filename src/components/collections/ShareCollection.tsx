@@ -1,5 +1,5 @@
+import { Check, Copy, Globe, Link, Share2, Users } from 'lucide-react';
 import React, { useState } from 'react';
-import { Share2, Copy, Globe, Link, Users, Check } from 'lucide-react';
 import { Button } from '../ui/Button';
 
 interface ShareCollectionProps {

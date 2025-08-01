@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { Grid3X3, List, Search, SlidersHorizontal } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { Tip } from '../../types/tip';
-import { TipCard } from './TipCard';
+import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Search, Filter, Grid3X3, List, SlidersHorizontal } from 'lucide-react';
-import { Badge } from '../ui/badge';
 import { Skeleton } from '../ui/skeleton';
+import { TipCard } from './TipCard';
 
 interface TipGridProps {
   tips: Tip[];

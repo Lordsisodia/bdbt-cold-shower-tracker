@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Search, Filter, Download, UserCheck, UserX, Mail, ChevronDown, Activity, CreditCard, Calendar, MoreVertical, Eye, Edit, Ban, Trash2 } from 'lucide-react';
+import { Download, Eye, Search, UserCheck, UserX } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from '../../components/ui/Button';
-import { Modal } from '../../components/ui/Modal';
 import { Card } from '../../components/ui/Card';
+import { Modal } from '../../components/ui/Modal';
 import { Toast } from '../../components/ui/Toast';
-import { api } from '../../lib/apiClient';
 
 interface User {
   id: string;

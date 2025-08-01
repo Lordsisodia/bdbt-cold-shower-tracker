@@ -1,8 +1,8 @@
+import { Bookmark, Download, Share2, X } from 'lucide-react';
 import React from 'react';
-import { X, Download, Bookmark, Share2 } from 'lucide-react';
-import { Modal } from '../ui/Modal';
-import { Button } from '../ui/Button';
 import { Tip } from '../../types/tip';
+import { Button } from '../ui/Button';
+import { Modal } from '../ui/Modal';
 
 interface TipDetailModalProps {
   tip: Tip | null;

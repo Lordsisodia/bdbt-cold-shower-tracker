@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { ChevronDown, Filter } from 'lucide-react';
+import React, { useState } from 'react';
 
 export interface FilterState {
   categories: string[];

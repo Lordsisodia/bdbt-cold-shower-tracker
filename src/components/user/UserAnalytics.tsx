@@ -1,29 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  TrendingUp, 
-  Users, 
-  Download, 
-  DollarSign,
-  Activity,
-  Eye,
-  Share2,
-  Clock,
-  Globe,
-  BarChart3,
-  PieChart,
-  Calendar
+import {
+    Activity, BarChart3, Calendar, Clock, DollarSign, Download, Eye, Globe, PieChart, Share2, TrendingUp,
+    Users
 } from 'lucide-react';
-import { 
-  analyticsService,
-  DashboardMetrics,
-  ContentPerformance,
-  CategoryDistribution,
-  EngagementData,
-  UserDemographic,
-  GeographicData,
-  AnalyticsFilters
-} from '../../services/analyticsService';
+import React, { useEffect, useState } from 'react';
 import { useActivityTracking } from '../../hooks/user/useActivityTracking';
+import {
+    AnalyticsFilters, analyticsService, CategoryDistribution, ContentPerformance, DashboardMetrics, EngagementData, GeographicData, UserDemographic
+} from '../../services/analyticsService';
 
 interface MetricCardProps {
   title: string;

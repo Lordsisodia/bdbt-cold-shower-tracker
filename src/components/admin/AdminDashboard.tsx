@@ -1,8 +1,5 @@
+import { Activity, BarChart3, Clock, DollarSign, FileText, TrendingUp, UserCheck, Users } from 'lucide-react';
 import React from 'react';
-import { 
-  Users, FileText, TrendingUp, Activity, 
-  DollarSign, UserCheck, Clock, BarChart3 
-} from 'lucide-react';
 
 const StatCard = ({ 
   title, 

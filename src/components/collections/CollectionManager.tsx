@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Folder, Trash2, Edit2, Users, Download } from 'lucide-react';
+import { Download, Edit2, Folder, Plus, Trash2, Users } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
+import { api } from '../../lib/apiClient';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 import { Input } from '../ui/Input';
 import { Modal } from '../ui/Modal';
 import { Toast } from '../ui/Toast';
-import { api } from '../../lib/apiClient';
-import { useAuth } from '../../contexts/AuthContext';
 
 export interface Collection {
   id: string;

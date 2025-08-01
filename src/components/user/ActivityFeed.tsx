@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Clock, Download, Eye, Search } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { Clock, Download, Eye, Search } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 export interface ActivityItem {
   id: string;

@@ -1,4 +1,3 @@
-import React from 'react';
 import { UserNavigation } from '../components/user/UserNavigation';
 
 export const UserDashboard = () => {

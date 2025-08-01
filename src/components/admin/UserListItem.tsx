@@ -1,5 +1,5 @@
+import { Activity, Calendar, Mail, MoreVertical } from 'lucide-react';
 import React from 'react';
-import { MoreVertical, Mail, Calendar, Activity } from 'lucide-react';
 
 interface User {
   id: string;

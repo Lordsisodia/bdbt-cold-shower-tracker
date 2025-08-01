@@ -1,6 +1,6 @@
+import { Bookmark, FileText, Home, LogOut, User } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Home, FileText, Bookmark, User, LogOut } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export const UserNavigation: React.FC = () => {

@@ -1,11 +1,6 @@
-import React, { useState, useMemo } from 'react';
-import { 
-  Search, Filter, Plus, FileText, Edit, Trash2, 
-  Eye, MoreVertical, Upload, Download, TrendingUp,
-  Clock, Star, Users, BarChart3
-} from 'lucide-react';
+import { Download, Edit, Eye, Plus, Search, Star, Trash2, Upload } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
 import { Button } from '../../components/ui/Button';
-import { Modal } from '../../components/ui/Modal';
 import { Card } from '../../components/ui/Card';
 
 interface Tip {

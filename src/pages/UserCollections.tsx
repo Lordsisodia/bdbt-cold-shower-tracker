@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Plus, Search, Grid, List, Star, Lock, Globe, MoreVertical, Edit2, Trash2 } from 'lucide-react';
-import { supabase } from '../services/supabaseClient';
+import { Edit2, Globe, Grid, List, Lock, MoreVertical, Plus, Search, Star, Trash2 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import LoadingOverlay from '../components/ui/LoadingOverlay';
+import { supabase } from '../services/supabaseClient';
 
 interface Collection {
   id: string;

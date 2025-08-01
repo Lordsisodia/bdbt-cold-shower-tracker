@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Play, Pause, Clock, CheckCircle, AlertCircle, 
-  TrendingUp, Mail, FileText, Calendar, RefreshCw,
-  Settings, Activity, BarChart2
-} from 'lucide-react';
+import { Activity, AlertCircle, Calendar, CheckCircle, Clock, FileText, Mail, Pause, Play, RefreshCw } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
-import { AutomatedTipGenerationService } from '../../services/automatedTipGeneration';
-import { EmailCampaignService } from '../../services/emailCampaignService';
 import { supabase } from '../../lib/supabase';
+import { AutomatedTipGenerationService } from '../../services/automatedTipGeneration';
 
 interface ScheduledJob {
   id: string;
