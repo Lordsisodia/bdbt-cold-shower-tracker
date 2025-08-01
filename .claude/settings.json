@@ -1,0 +1,60 @@
+{
+  "name": "BDBT Tips System",
+  "version": "1.0.0",
+  "hooks": {
+    "user-prompt-submit": [
+      {
+        "description": "Validate and enhance prompts",
+        "command": "echo '🔍 Processing request for BDBT Tips System...'"
+      }
+    ],
+    "session-start": [
+      {
+        "description": "Load development context",
+        "command": "bash .claude/hooks/scripts/session-context.sh"
+      }
+    ],
+    "pre-tool-use": {
+      "Edit": [
+        {
+          "description": "Format code before editing",
+          "command": "bash .claude/hooks/scripts/prettier-format.sh ${file_path}"
+        }
+      ],
+      "Write": [
+        {
+          "description": "Backup critical files",
+          "pattern": "(package\\.json|tsconfig\\.json|\\.env)",
+          "command": "cp '${file_path}' '${file_path}.backup.$(date +%Y%m%d_%H%M%S)' 2>/dev/null || true"
+        }
+      ]
+    },
+    "post-tool-use": {
+      "Edit": [
+        {
+          "description": "Type check after TypeScript edits",
+          "pattern": "\\.(ts|tsx)$",
+          "command": "npm run typecheck 2>/dev/null || echo '⚠️  Type checking skipped'"
+        }
+      ],
+      "MultiEdit": [
+        {
+          "description": "Build check after multiple edits",
+          "command": "echo '🔨 Consider running: npm run build'"
+        }
+      ]
+    },
+    "stop": [
+      {
+        "description": "Log session completion",
+        "command": "echo \"✅ BDBT session completed: $(date)\" >> ~/.claude/bdbt-sessions.log"
+      }
+    ]
+  },
+  "features": {
+    "auto-format": true,
+    "type-checking": true,
+    "session-logging": true,
+    "backup-configs": true
+  }
+}

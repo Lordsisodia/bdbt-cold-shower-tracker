@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, Mail, Lock, User, Github, Chrome } from 'lucide-react';
 import { Button, Card } from '../ui';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -38,12 +38,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           return;
         }
         
-        const { error } = await signUp(email, password, { full_name: fullName });
+        const { error } = await signUp({ 
+          email, 
+          password, 
+          fullName 
+        });
         if (error) throw error;
         
         setSuccess('Check your email for verification link!');
       } else if (mode === 'signin') {
-        const { error } = await signIn(email, password);
+        const { error } = await signIn({ email, password });
         if (error) throw error;
         
         onClose();

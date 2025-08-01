@@ -1,112 +1,142 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navigation from '../components/landing/Navigation';
 import Footer from '../components/landing/Footer';
 import { Trophy, TrendingUp, Heart, MessageCircle, Share2, CheckCircle, Calendar, Users, Sparkles, Plus, Filter, ChevronDown, Award } from 'lucide-react';
-
-interface Win {
-  id: string;
-  user: {
-    name: string;
-    avatar: string;
-    streak: number;
-  };
-  content: string;
-  category: 'health' | 'wealth' | 'happiness';
-  likes: number;
-  comments: number;
-  timeAgo: string;
-  isLiked?: boolean;
-}
+import { dailyWinsService, type DailyWin, type UserProfile, type WinFilters } from '../services/dailyWinsService';
+import { supabase } from '../lib/supabase';
+import { formatDistanceToNow } from 'date-fns';
 
 const DailyWinsPage: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState<'recent' | 'popular' | 'following'>('recent');
   const [showCategories, setShowCategories] = useState<'all' | 'health' | 'wealth' | 'happiness'>('all');
+  const [wins, setWins] = useState<DailyWin[]>([]);
+  const [topPerformers, setTopPerformers] = useState<UserProfile[]>([]);
+  const [communityStats, setCommunityStats] = useState({
+    todayWins: 0,
+    activeMembers: 0,
+    activeStreaks: 0
+  });
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [showCreateWin, setShowCreateWin] = useState(false);
+  const [newWinContent, setNewWinContent] = useState('');
+  const [newWinCategory, setNewWinCategory] = useState<'health' | 'wealth' | 'happiness'>('health');
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
-  const wins: Win[] = [
-    {
-      id: '1',
-      user: {
-        name: 'Alex Johnson',
-        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop',
-        streak: 47
-      },
-      content: "Hit my 5AM wake-up goal for 30 days straight! The morning routine from the Blueprint is literally changing my life. Energy levels through the roof! 🚀",
-      category: 'health',
-      likes: 234,
-      comments: 18,
-      timeAgo: '2 hours ago',
-      isLiked: true
-    },
-    {
-      id: '2',
-      user: {
-        name: 'Sarah Chen',
-        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
-        streak: 21
-      },
-      content: "Closed my first $10K client using the negotiation tips from Episode 87. Still can't believe it worked! Thank you BDBT family! 💰",
-      category: 'wealth',
-      likes: 567,
-      comments: 45,
-      timeAgo: '4 hours ago'
-    },
-    {
-      id: '3',
-      user: {
-        name: 'Marcus Williams',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
-        streak: 93
-      },
-      content: "Finally had that difficult conversation with my partner. Used the communication framework from the relationships guide. We're stronger than ever now! ❤️",
-      category: 'happiness',
-      likes: 189,
-      comments: 12,
-      timeAgo: '6 hours ago'
-    },
-    {
-      id: '4',
-      user: {
-        name: 'Emily Rodriguez',
-        avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop',
-        streak: 15
-      },
-      content: "Week 2 of cold showers complete! I thought y'all were crazy but the mental clarity is REAL. Plus saved $50 on my energy bill 😄",
-      category: 'health',
-      likes: 412,
-      comments: 34,
-      timeAgo: '8 hours ago'
-    },
-    {
-      id: '5',
-      user: {
-        name: 'James Park',
-        avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop',
-        streak: 156
-      },
-      content: "Launched my side hustle today! Been building in silence for 3 months following the Blueprint. First sale already in! 🎉",
-      category: 'wealth',
-      likes: 892,
-      comments: 67,
-      timeAgo: '12 hours ago',
-      isLiked: true
+  // Get current user
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setCurrentUser(user);
+    };
+    getUser();
+
+    // Subscribe to auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setCurrentUser(session?.user || null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Load wins
+  useEffect(() => {
+    loadWins();
+  }, [selectedFilter, showCategories, page, currentUser]);
+
+  // Load top performers and stats
+  useEffect(() => {
+    loadTopPerformers();
+    loadCommunityStats();
+  }, []);
+
+  const loadWins = async () => {
+    try {
+      setLoading(true);
+      const filters: WinFilters = {
+        category: showCategories,
+        sortBy: selectedFilter,
+        page,
+        limit: 10,
+        userId: currentUser?.id
+      };
+
+      const result = await dailyWinsService.getWins(filters);
+      setWins(result.wins);
+      setTotalPages(result.totalPages);
+    } catch (error) {
+      console.error('Error loading wins:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
-  const topPerformers = [
-    { name: 'David Kim', streak: 365, avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop' },
-    { name: 'Lisa Brown', streak: 243, avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop' },
-    { name: 'Tom Wilson', streak: 198, avatar: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=100&h=100&fit=crop' },
-  ];
+  const loadTopPerformers = async () => {
+    try {
+      const performers = await dailyWinsService.getTopPerformers(3);
+      setTopPerformers(performers);
+    } catch (error) {
+      console.error('Error loading top performers:', error);
+    }
+  };
+
+  const loadCommunityStats = async () => {
+    try {
+      const stats = await dailyWinsService.getCommunityStats();
+      setCommunityStats(stats);
+    } catch (error) {
+      console.error('Error loading community stats:', error);
+    }
+  };
+
+  const handleCreateWin = async () => {
+    if (!currentUser || !newWinContent.trim()) return;
+
+    try {
+      const newWin = await dailyWinsService.createWin({
+        user_id: currentUser.id,
+        content: newWinContent,
+        category: newWinCategory
+      });
+
+      // Add to wins list
+      setWins([newWin, ...wins]);
+      setNewWinContent('');
+      setShowCreateWin(false);
+      
+      // Reload stats
+      loadCommunityStats();
+    } catch (error) {
+      console.error('Error creating win:', error);
+    }
+  };
+
+  const handleLikeWin = async (winId: number) => {
+    if (!currentUser) {
+      // Redirect to login or show auth modal
+      return;
+    }
+
+    try {
+      const result = await dailyWinsService.toggleLike(winId, currentUser.id);
+      
+      // Update local state
+      setWins(wins.map(win => 
+        win.id === winId 
+          ? { ...win, is_liked: result.liked, likes_count: win.likes_count + (result.liked ? 1 : -1) }
+          : win
+      ));
+    } catch (error) {
+      console.error('Error liking win:', error);
+    }
+  };
 
   const categoryColors = {
     health: 'bg-green-100 text-green-700 border-green-200',
     wealth: 'bg-blue-100 text-blue-700 border-blue-200',
     happiness: 'bg-purple-100 text-purple-700 border-purple-200',
   };
-
-  const filteredWins = wins.filter(win => 
-    showCategories === 'all' || win.category === showCategories
-  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -141,23 +171,26 @@ const DailyWinsPage: React.FC = () => {
             {/* Community Stats */}
             <div className="flex justify-center gap-8 pt-4">
               <div className="text-center">
-                <div className="text-3xl font-bold text-white">12,847</div>
+                <div className="text-3xl font-bold text-white">{communityStats.todayWins.toLocaleString()}</div>
                 <div className="text-white/70">Wins Today</div>
               </div>
               <div className="w-px bg-white/20" />
               <div className="text-center">
-                <div className="text-3xl font-bold text-white">3,421</div>
+                <div className="text-3xl font-bold text-white">{communityStats.activeMembers.toLocaleString()}</div>
                 <div className="text-white/70">Active Members</div>
               </div>
               <div className="w-px bg-white/20" />
               <div className="text-center">
-                <div className="text-3xl font-bold text-white">847</div>
+                <div className="text-3xl font-bold text-white">{communityStats.activeStreaks.toLocaleString()}</div>
                 <div className="text-white/70">Streaks Active</div>
               </div>
             </div>
 
             {/* Share Win Button */}
-            <button className="inline-flex items-center gap-2 bg-white text-gray-900 px-8 py-4 rounded-full font-medium hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg">
+            <button 
+              onClick={() => currentUser ? setShowCreateWin(true) : alert('Please sign in to share a win')}
+              className="inline-flex items-center gap-2 bg-white text-gray-900 px-8 py-4 rounded-full font-medium hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
               <Plus className="w-5 h-5" />
               Share Your Win
             </button>
@@ -175,11 +208,11 @@ const DailyWinsPage: React.FC = () => {
 
           <div className="grid md:grid-cols-3 gap-6">
             {topPerformers.map((performer, index) => (
-              <div key={index} className="flex items-center gap-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-6 border border-yellow-200">
+              <div key={performer.id} className="flex items-center gap-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-6 border border-yellow-200">
                 <div className="relative">
                   <img 
-                    src={performer.avatar} 
-                    alt={performer.name}
+                    src={performer.avatar_url || `https://ui-avatars.com/api/?name=${performer.full_name || performer.username || 'User'}&background=random`} 
+                    alt={performer.full_name || performer.username || 'User'}
                     className="w-16 h-16 rounded-full object-cover"
                   />
                   <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
@@ -187,10 +220,10 @@ const DailyWinsPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900">{performer.name}</h3>
+                  <h3 className="font-semibold text-gray-900">{performer.full_name || performer.username || 'Anonymous'}</h3>
                   <div className="flex items-center gap-1 text-orange-600">
                     <Trophy className="w-4 h-4" />
-                    <span className="font-bold">{performer.streak} day streak</span>
+                    <span className="font-bold">{performer.streak_count} day streak</span>
                   </div>
                 </div>
               </div>
@@ -287,77 +320,151 @@ const DailyWinsPage: React.FC = () => {
       {/* Wins Feed */}
       <section className="py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-6">
-            {filteredWins.map((win) => (
-              <div key={win.id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
-                <div className="p-6">
-                  {/* User Header */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <img 
-                        src={win.user.avatar} 
-                        alt={win.user.name}
-                        className="w-12 h-12 rounded-full object-cover"
-                      />
-                      <div>
-                        <h3 className="font-semibold text-gray-900">{win.user.name}</h3>
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <span>{win.timeAgo}</span>
-                          <span>•</span>
-                          <span className="flex items-center gap-1 text-orange-600">
-                            <Trophy className="w-3 h-3" />
-                            {win.user.streak} day streak
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium border ${categoryColors[win.category]}`}>
-                      {win.category}
-                    </span>
-                  </div>
-
-                  {/* Content */}
-                  <p className="text-gray-800 text-lg mb-4 leading-relaxed">{win.content}</p>
-
-                  {/* Actions */}
-                  <div className="flex items-center justify-between pt-4 border-t">
-                    <div className="flex items-center gap-4">
-                      <button className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-                        win.isLiked 
-                          ? 'bg-red-100 text-red-600' 
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                      }`}>
-                        <Heart className={`w-5 h-5 ${win.isLiked ? 'fill-current' : ''}`} />
-                        <span className="font-medium">{win.likes}</span>
+          {/* Create Win Modal */}
+          {showCreateWin && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-2xl max-w-2xl w-full p-6 space-y-4">
+                <h3 className="text-2xl font-bold text-gray-900">Share Your Win</h3>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                  <div className="flex gap-2">
+                    {(['health', 'wealth', 'happiness'] as const).map((cat) => (
+                      <button
+                        key={cat}
+                        onClick={() => setNewWinCategory(cat)}
+                        className={`px-4 py-2 rounded-lg capitalize font-medium transition-all ${
+                          newWinCategory === cat
+                            ? categoryColors[cat]
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        {cat}
                       </button>
-
-                      <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors">
-                        <MessageCircle className="w-5 h-5" />
-                        <span className="font-medium">{win.comments}</span>
-                      </button>
-
-                      <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors">
-                        <Share2 className="w-5 h-5" />
-                        <span className="font-medium">Share</span>
-                      </button>
-                    </div>
-
-                    <button className="text-blue-600 hover:text-blue-700 font-medium">
-                      View Comments →
-                    </button>
+                    ))}
                   </div>
                 </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Your Win</label>
+                  <textarea
+                    value={newWinContent}
+                    onChange={(e) => setNewWinContent(e.target.value)}
+                    placeholder="Share your victory with the community..."
+                    className="w-full p-4 border rounded-lg resize-none h-32 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    maxLength={500}
+                  />
+                  <p className="text-sm text-gray-500 mt-1">{newWinContent.length}/500 characters</p>
+                </div>
+
+                <div className="flex gap-4">
+                  <button
+                    onClick={handleCreateWin}
+                    disabled={!newWinContent.trim()}
+                    className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:bg-gray-300"
+                  >
+                    Share Win
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowCreateWin(false);
+                      setNewWinContent('');
+                    }}
+                    className="px-6 py-3 border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
-            ))}
-          </div>
+            </div>
+          )}
+
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+              <p className="mt-4 text-gray-600">Loading wins...</p>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {wins.map((win) => (
+                <div key={win.id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+                  <div className="p-6">
+                    {/* User Header */}
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <img 
+                          src={win.user?.avatar_url || `https://ui-avatars.com/api/?name=${win.user?.full_name || win.user?.username || 'User'}&background=random`} 
+                          alt={win.user?.full_name || win.user?.username || 'User'}
+                          className="w-12 h-12 rounded-full object-cover"
+                        />
+                        <div>
+                          <h3 className="font-semibold text-gray-900">{win.user?.full_name || win.user?.username || 'Anonymous'}</h3>
+                          <div className="flex items-center gap-2 text-sm text-gray-600">
+                            <span>{formatDistanceToNow(new Date(win.created_at), { addSuffix: true })}</span>
+                            <span>•</span>
+                            <span className="flex items-center gap-1 text-orange-600">
+                              <Trophy className="w-3 h-3" />
+                              {win.user?.streak_count || 0} day streak
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <span className={`px-3 py-1 rounded-full text-sm font-medium border ${categoryColors[win.category]}`}>
+                        {win.category}
+                      </span>
+                    </div>
+
+                    {/* Content */}
+                    <p className="text-gray-800 text-lg mb-4 leading-relaxed">{win.content}</p>
+
+                    {/* Actions */}
+                    <div className="flex items-center justify-between pt-4 border-t">
+                      <div className="flex items-center gap-4">
+                        <button 
+                          onClick={() => handleLikeWin(win.id)}
+                          className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+                            win.is_liked 
+                              ? 'bg-red-100 text-red-600' 
+                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          }`}
+                        >
+                          <Heart className={`w-5 h-5 ${win.is_liked ? 'fill-current' : ''}`} />
+                          <span className="font-medium">{win.likes_count}</span>
+                        </button>
+
+                        <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors">
+                          <MessageCircle className="w-5 h-5" />
+                          <span className="font-medium">{win.comments_count}</span>
+                        </button>
+
+                        <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200 transition-colors">
+                          <Share2 className="w-5 h-5" />
+                          <span className="font-medium">Share</span>
+                        </button>
+                      </div>
+
+                      <button className="text-blue-600 hover:text-blue-700 font-medium">
+                        View Comments →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Load More */}
-          <div className="text-center mt-12">
-            <button className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-colors">
-              <Sparkles className="w-5 h-5" />
-              Load More Wins
-            </button>
-          </div>
+          {page < totalPages && (
+            <div className="text-center mt-12">
+              <button 
+                onClick={() => setPage(page + 1)}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-colors"
+              >
+                <Sparkles className="w-5 h-5" />
+                Load More Wins
+              </button>
+            </div>
+          )}
         </div>
       </section>
 

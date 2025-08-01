@@ -1,145 +1,171 @@
-# Cold Shower Tracker - BDBT
+# BDBT - Autonomous Tip Generation System
 
-A mobile-first React app for tracking your cold shower challenge, built for Big Daddy's Big Tips (BDBT) brand.
+A React/TypeScript application with integrated Tmux-Orchestrator for 24/7 autonomous content generation, processing, and management.
 
-## Features
+## 🚀 Quick Start
 
-- **Monthly Calendar View**: Visual tracking with emoji indicators
-- **Streak Tracking**: Current streak and best streak counters
-- **Progress Milestones**: 7, 14, 21, and 30-day milestone tracking
-- **Local Storage**: Data persists between sessions
-- **Mobile Optimized**: Touch-friendly interface with responsive design
-- **PWA Ready**: Can be installed as a mobile app
-
-## Components
-
-### ColdShowerTracker
-Main component that orchestrates the entire app with:
-- Benefits display (Mental Clarity, Increased Energy, etc.)
-- Progress statistics
-- Monthly calendar
-- Instructions and legend
-
-### Calendar
-Interactive calendar with:
-- Month navigation
-- Day completion tracking
-- Long-press for additional options (extra cold, felt amazing)
-- Visual indicators for different states
-
-### ProgressStats
-Displays:
-- Current streak (prominently featured)
-- Best streak achieved
-- Monthly completion count
-- Progress milestones with checkmarks
-- Motivational messages based on streak
-
-## Design System
-
-### Colors
-- **Primary**: Deep blue (#1E3A8A) - BDBT brand color
-- **Secondary**: Light blue (#60A5FA) - Accent color
-- **Success**: Green (#10B981) - Completed days
-- **Background**: Gradient from blue to teal
-
-### Typography
-- **Headers**: Bold, modern sans-serif
-- **Body**: Clean, readable fonts
-- **Mobile-first**: Optimized text sizes for mobile screens
-
-## Data Structure
-
-```typescript
-interface TrackedDay {
-  date: string;        // ISO format: "2024-01-01"
-  completed: boolean;  // Basic completion
-  extraCold?: boolean; // Extra cold shower
-  feltAmazing?: boolean; // Felt great afterward
-}
-```
-
-## Development
-
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn
-
-### Setup
+### Regular Development
 ```bash
 npm install
 npm run dev
 ```
 
-### Build
+### Autonomous Agent System
 ```bash
-npm run build
+# Setup autonomous agents
+npm run setup-tmux
+
+# Start orchestrator
+npm run orchestrator
+
+# Manual agent operations
+npm run quality-audit
+npm run pdf-batch
 ```
 
-## Deployment to Vercel
+## 🤖 Autonomous System Overview
 
-### Option 1: Vercel CLI
-```bash
-npm install -g vercel
-vercel --prod
+The BDBT system runs autonomous agents 24/7 using tmux sessions:
+
+### Agent Architecture
+- **Orchestrator**: Main coordinator managing all agents
+- **Tip Generator**: Creates new tips using Grok API
+- **Database Manager**: Handles Supabase operations
+- **PDF Creator**: Generates PDF exports
+- **Quality Auditor**: Reviews content for quality
+
+### Scheduled Operations
+- **Daily**: 5 new tips generated and processed
+- **Hourly**: Database maintenance and imports
+- **Twice Daily**: Quality audits at 10 AM and 4 PM
+- **Evening**: PDF generation at 6 PM
+- **Weekly**: Compilation PDFs on Sundays
+
+## 📁 Project Structure
+
+```
+bdbt/
+├── agents/                    # Autonomous agent scripts
+│   ├── orchestrator.js       # Main coordinator
+│   ├── quality-audit.js      # Content quality checker
+│   └── pdf-batch.js          # PDF generation
+├── src/
+│   ├── components/           # React components
+│   ├── services/            # Business logic
+│   │   ├── tipsDatabaseService.ts
+│   │   ├── grokApiService.ts
+│   │   └── pdfGenerator.ts
+│   └── scripts/             # Utility scripts
+├── scripts/                 # Database and setup scripts
+├── orchestrator-config.json # Agent configuration
+└── tmux-setup.sh           # Tmux session setup
 ```
 
-### Option 2: GitHub Integration
-1. Push code to GitHub repository
-2. Connect repository to Vercel
-3. Deploy automatically on push
+## 🛠 Available Scripts
 
-### Option 3: Manual Deploy
-1. Run `npm run build`
-2. Upload `dist` folder to Vercel
+### Development
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run typecheck` - Run TypeScript checks
+- `npm run lint` - Run ESLint
 
-## Mobile Features
+### Content Management
+- `npm run process-tips` - Process tips with Grok API
+- `npm run import-tips` - Import tips to Supabase
+- `npm run manage-tips` - Manage tips database
+- `npm run export-tips` - Export tips for external use
 
-### Touch Interactions
-- **Tap**: Toggle day completion
-- **Long press**: Open detailed options modal
-- **Swipe-friendly**: Month navigation
+### Autonomous System
+- `npm run setup-tmux` - Setup tmux sessions
+- `npm run orchestrator` - Start main orchestrator
+- `npm run quality-audit` - Run quality audit
+- `npm run pdf-batch` - Generate PDF batch
 
-### PWA Features
-- **Installable**: Add to home screen
-- **Offline-ready**: Works without internet
-- **App-like**: Fullscreen experience
+## 🔧 Configuration
 
-### iOS Optimization
-- **Safari-friendly**: Proper viewport settings
-- **Home screen**: Custom app icon and name
-- **Status bar**: Integrated design
+### Environment Variables
+```bash
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+GROK_API_KEY=your_grok_api_key
+```
 
-## BDBT Brand Integration
+### Orchestrator Config
+Edit `orchestrator-config.json` to customize:
+- Agent schedules
+- Output targets
+- Communication channels
+- Quality thresholds
 
-### Messaging
-- Aligns with BDBT's "small changes, massive results" philosophy
-- Emphasizes health, wealth, and happiness benefits
-- Motivational copy matches brand voice
+## 📊 Monitoring
 
-### Visual Identity
-- Cool color palette (blues, teals)
-- Clean, modern design
-- Wellness-focused aesthetic
+### Status Files
+- `/tmp/bdbt_status/` - Agent status updates
+- `/tmp/bdbt_metrics/` - Performance metrics
+- `/tmp/bdbt_errors/` - Error logs
+- `/tmp/bdbt_tasks/` - Task queue
 
-## Technical Stack
+### Tmux Sessions
+```bash
+# Connect to orchestrator
+tmux attach-session -t bdbt-orchestrator
 
-- **React 18**: Modern React with hooks
-- **TypeScript**: Type safety
-- **Tailwind CSS**: Utility-first styling
-- **Vite**: Fast development and builds
-- **Local Storage**: Client-side data persistence
+# View specific agent
+tmux attach-session -t bdbt-orchestrator:tip-generator
+```
 
-## Browser Support
+## 🎯 Automation Targets
 
-- **Modern browsers**: Chrome, Firefox, Safari, Edge
-- **Mobile browsers**: iOS Safari, Chrome Mobile
-- **PWA support**: Chrome, Safari, Firefox
+- **5 tips/day** generated and processed
+- **99% uptime** for autonomous system
+- **80% approval rate** in quality audits
+- **2 PDF batches/week** published
+- **Automatic git backups** every 30 minutes
 
-## Future Enhancements
+## 🏗 Architecture
 
-- **Data export**: CSV/PDF export functionality
-- **Social sharing**: Share progress to social media
-- **Reminder notifications**: Push notifications for daily reminders
-- **Stats dashboard**: Weekly/monthly analytics
-- **Habit stacking**: Integration with other BDBT habits
+### Database (Supabase)
+- `bdbt_tips` - Main tips table
+- `tip_includes` - What's included items
+- `tip_metrics` - Performance metrics
+- `tip_resources` - Related resources
+- User analytics and progress tracking
+
+### AI Integration
+- **Grok API** for tip generation
+- **Quality algorithms** for content review
+- **Template system** for PDF generation
+- **MCP integration** for Supabase operations
+
+### Agent Communication
+- **File-based IPC** via `/tmp/bdbt_*` directories
+- **JSON status updates** for coordination
+- **Git commits** for progress tracking
+- **Tmux messaging** for real-time updates
+
+## 🚦 System Health
+
+### Daily Reports
+- Tip generation metrics
+- Quality audit results
+- PDF creation status
+- Database performance
+- Error summaries
+
+### Error Recovery
+- Automatic retry mechanisms
+- Graceful degradation
+- Alert notifications
+- Manual intervention points
+
+## 📈 Scaling
+
+The system is designed to scale autonomously:
+- **Horizontal**: Add more agent instances
+- **Vertical**: Increase processing power
+- **Temporal**: Adjust schedules based on load
+- **Quality**: Dynamic threshold adjustment
+
+---
+
+*Powered by Tmux-Orchestrator for 24/7 autonomous operations*

@@ -1,13 +1,27 @@
 import React, { useState } from 'react';
 import Navigation from '../components/landing/Navigation';
 import Footer from '../components/landing/Footer';
-import { ChevronLeft, ChevronRight, Download, Eye, Palette, Layout } from 'lucide-react';
+// PdfTemplatePreview component removed - using CustomPDFGenerator instead
+import { ChevronLeft, ChevronRight, Download, Eye, Palette, Layout, Package, FileText } from 'lucide-react';
+import ExportDownloadModal from '../components/tips/ExportDownloadModal';
+import BatchExportModal from '../components/tips/BatchExportModal';
+import CustomPDFGenerator from '../components/tips/CustomPDFGenerator';
+import ImageWithFallback from '../components/common/ImageWithFallback';
+import { 
+  ImprovedCoverPage, 
+  ImprovedBenefitsPage, 
+  ImprovedImplementationPage,
+  ImprovedProgressPage,
+  ImprovedCTAPage
+} from '../components/tips/ImprovedTemplatePages';
+import { ImprovedSinglePageTemplate } from '../components/tips/ImprovedSinglePageTemplate';
 
 interface MockTip {
   id: number;
   title: string;
   subtitle: string;
   category: 'health' | 'wealth' | 'happiness';
+  subcategory: string;
   difficulty: string;
   description: string;
   primary_benefit: string;
@@ -16,6 +30,8 @@ interface MockTip {
   implementation_time: string;
   frequency: string;
   cost: string;
+  scientific_backing: boolean;
+  tags: string[];
   images: {
     hero: string;
     benefits: string;
@@ -25,11 +41,15 @@ interface MockTip {
 }
 
 const TipsTemplatePreview: React.FC = () => {
+  const [showExportModal, setShowExportModal] = useState(false);
+  const [showBatchExportModal, setShowBatchExportModal] = useState(false);
+  const [isCustomMode, setIsCustomMode] = useState(false);
   const [selectedTip, setSelectedTip] = useState<MockTip>({
     id: 1,
     title: "Morning Gratitude Practice",
     subtitle: "Start your day with positivity and appreciation",
     category: "happiness",
+    subcategory: "mindfulness",
     difficulty: "Easy",
     description: "Begin each morning by writing down three things you're grateful for.",
     primary_benefit: "Improved mood and outlook",
@@ -38,6 +58,8 @@ const TipsTemplatePreview: React.FC = () => {
     implementation_time: "5 minutes",
     frequency: "Daily",
     cost: "Free",
+    scientific_backing: true,
+    tags: ["gratitude", "mindfulness", "happiness", "morning routine"],
     images: {
       hero: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=80",
       benefits: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=600&h=400&fit=crop&q=80",
@@ -56,6 +78,7 @@ const TipsTemplatePreview: React.FC = () => {
       title: "Cold Shower Challenge",
       subtitle: "Boost resilience with temperature therapy",
       category: "health",
+      subcategory: "wellness",
       difficulty: "Moderate",
       description: "End your shower with 30 seconds of cold water to build mental toughness.",
       primary_benefit: "Increased energy levels",
@@ -64,6 +87,8 @@ const TipsTemplatePreview: React.FC = () => {
       implementation_time: "2 minutes",
       frequency: "Daily",
       cost: "Free",
+      scientific_backing: true,
+      tags: ["cold therapy", "resilience", "health", "energy"],
       images: {
         hero: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&q=80",
         benefits: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop&q=80",
@@ -76,6 +101,7 @@ const TipsTemplatePreview: React.FC = () => {
       title: "Investment Automation",
       subtitle: "Build wealth while you sleep",
       category: "wealth",
+      subcategory: "investing",
       difficulty: "Easy",
       description: "Set up automatic transfers to your investment account every payday.",
       primary_benefit: "Consistent wealth building",
@@ -84,6 +110,8 @@ const TipsTemplatePreview: React.FC = () => {
       implementation_time: "15 minutes",
       frequency: "Monthly",
       cost: "Free",
+      scientific_backing: false,
+      tags: ["investing", "automation", "wealth", "compound growth"],
       images: {
         hero: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=600&fit=crop&q=80",
         benefits: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&q=80",
@@ -101,226 +129,35 @@ const TipsTemplatePreview: React.FC = () => {
 
   const currentColors = categoryColors[selectedTip.category];
 
-  const pages = [
-    // Cover Page
+  const pages = selectedTemplate === "fourPage" ? [
+    // 5-Page Professional Template with Icons
     {
       name: 'Cover Page',
-      content: (
-        <div className="w-full h-full relative overflow-hidden">
-          {/* Background Image */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${selectedTip.images.hero})` }}
-          />
-          <div 
-            className="absolute inset-0"
-            style={{ 
-              background: `linear-gradient(135deg, ${currentColors.primary}CC 0%, ${currentColors.accent}CC 100%)` 
-            }}
-          />
-          
-          {/* Content */}
-          <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-12 text-white">
-            {/* Background pattern overlay */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-32 -translate-y-32" />
-              <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-48 translate-y-48" />
-            </div>
-
-            <div className="relative z-10 text-center">
-            <div className="inline-flex items-center gap-2 px-6 py-3 bg-white/20 rounded-full mb-8 backdrop-blur-sm">
-              <span className="text-sm font-semibold uppercase tracking-wider">
-                {selectedTip.category} • {selectedTip.difficulty}
-              </span>
-            </div>
-            
-            <h1 className="text-5xl font-bold mb-6 leading-tight max-w-3xl">
-              {selectedTip.title}
-            </h1>
-            
-            <p className="text-xl opacity-90 max-w-2xl mx-auto mb-12">
-              {selectedTip.subtitle}
-            </p>
-
-            <div className="flex items-center justify-center gap-6 text-sm">
-              <div className="flex items-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>{selectedTip.implementation_time}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>{selectedTip.cost}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* BDBT Logo */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-            <div className="text-2xl font-bold">BDBT</div>
-          </div>
-        </div>
-      )
+      content: <ImprovedCoverPage tip={selectedTip} colors={currentColors} />
     },
-    // Benefits Page
     {
       name: 'Benefits',
-      content: (
-        <div className="w-full h-full relative overflow-hidden">
-          {/* Background Image */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center opacity-20"
-            style={{ backgroundImage: `url(${selectedTip.images.benefits})` }}
-          />
-          <div className="absolute inset-0 bg-gray-50/90" />
-          
-          <div className="relative z-10 w-full h-full p-12">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">Key Benefits</h2>
-              <p className="text-lg text-gray-600">What you'll gain from this tip</p>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 max-w-4xl mx-auto">
-            {[
-              { text: selectedTip.primary_benefit, icon: '🎯' },
-              { text: selectedTip.secondary_benefit, icon: '💡' },
-              { text: selectedTip.tertiary_benefit, icon: '🚀' }
-            ].map((benefit, index) => (
-              <div key={index} className="flex gap-6 items-start">
-                <div 
-                  className="w-16 h-16 rounded-full flex items-center justify-center text-2xl"
-                  style={{ backgroundColor: currentColors.secondary }}
-                >
-                  {benefit.icon}
-                </div>
-                <div className="flex-1">
-                  <p className="text-lg text-gray-700 leading-relaxed">{benefit.text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-            {/* Bottom decoration */}
-            <div className="absolute bottom-0 left-0 right-0 h-2" style={{ backgroundColor: currentColors.primary }} />
-          </div>
-        </div>
-      )
+      content: <ImprovedBenefitsPage tip={selectedTip} colors={currentColors} />
     },
-    // Implementation Page
     {
-      name: "Implementation Guide",
-      content: (
-        <div className="w-full h-full relative overflow-hidden bg-white">
-          {/* Background Image */}
-          <div 
-            className="absolute top-0 right-0 w-1/2 h-full bg-cover bg-center opacity-30"
-            style={{ backgroundImage: `url(${selectedTip.images.implementation})` }}
-          />
-          <div className="absolute top-0 right-0 w-1/2 h-full bg-white/60" />
-          
-          <div className="relative z-10 w-full h-full p-12">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">Implementation Guide</h2>
-              <p className="text-lg text-gray-600">How to get started today</p>
-            </div>
-
-            <div className="max-w-4xl mx-auto">
-            <div className="p-6 bg-gray-50 rounded-lg mb-8">
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div>
-                  <p className="text-sm text-gray-500">Time Required</p>
-                  <p className="font-semibold text-lg">{selectedTip.implementation_time}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Frequency</p>
-                  <p className="font-semibold text-lg">{selectedTip.frequency}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500">Cost</p>
-                  <p className="font-semibold text-lg">{selectedTip.cost}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              <div className="p-6 bg-blue-50 rounded-lg">
-                <h3 className="font-semibold text-xl mb-2 text-blue-900">Getting Started</h3>
-                <p className="text-blue-800">{selectedTip.description}</p>
-              </div>
-              
-              <div className="p-6 bg-green-50 rounded-lg">
-                <h3 className="font-semibold text-xl mb-2 text-green-900">Pro Tips</h3>
-                <ul className="text-green-800 space-y-2">
-                  <li>• Start small and build consistency</li>
-                  <li>• Track your progress daily</li>
-                  <li>• Find an accountability partner</li>
-                  <li>• Celebrate small wins along the way</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-            {/* Category indicator */}
-            <div className="absolute bottom-8 right-8">
-              <div 
-                className="px-6 py-3 rounded-full text-white font-semibold"
-                style={{ backgroundColor: currentColors.primary }}
-              >
-                {selectedTip.category.toUpperCase()} TIP
-              </div>
-            </div>
-          </div>
-        </div>
-      )
+      name: 'Implementation',
+      content: <ImprovedImplementationPage tip={selectedTip} colors={currentColors} />
     },
-    // Call to Action Page
+    {
+      name: 'Progress Tracking',
+      content: <ImprovedProgressPage tip={selectedTip} colors={currentColors} />
+    },
     {
       name: 'Call to Action',
-      content: (
-        <div className="w-full h-full relative overflow-hidden">
-          {/* Background Image */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${selectedTip.images.cta})` }}
-          />
-          <div 
-            className="absolute inset-0"
-            style={{ backgroundColor: `${currentColors.accent}DD` }}
-          />
-          
-          <div className="relative z-10 w-full h-full p-12 text-white flex flex-col items-center justify-center">
-          <div className="text-center max-w-3xl">
-            <h2 className="text-5xl font-bold mb-8">Ready to Get Started?</h2>
-            
-            <p className="text-2xl mb-12 opacity-90">
-              Transform your life with this simple yet powerful tip.
-            </p>
-
-            <div className="bg-white text-gray-900 p-8 rounded-2xl mb-12">
-              <h3 className="text-2xl font-bold mb-4">Next Steps:</h3>
-              <ol className="text-left space-y-3 text-lg">
-                <li>1. Download the complete PDF guide</li>
-                <li>2. Follow the implementation steps</li>
-                <li>3. Track your progress daily</li>
-                <li>4. Share your success with the community</li>
-              </ol>
-            </div>
-
-              <div className="space-y-6">
-                <div className="text-3xl font-bold">BDBT</div>
-                <p className="text-xl">Better Days, Better Tomorrow</p>
-                <p className="text-lg opacity-75">www.bdbt.com</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
+      content: <ImprovedCTAPage tip={selectedTip} colors={currentColors} />
+    }
+  ] : [
+    // Single Page Summary
+    {
+      name: 'Summary Page',
+      content: <ImprovedSinglePageTemplate tip={selectedTip} colors={currentColors} />
     }
   ];
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
@@ -343,23 +180,49 @@ const TipsTemplatePreview: React.FC = () => {
         <div className="grid grid-cols-12 gap-8">
           {/* Sidebar */}
           <div className="col-span-12 lg:col-span-3">
-            {/* Tip selector */}
+            {/* Mode Toggle */}
             <div className="bg-white rounded-lg shadow p-6 mb-6">
-              <h3 className="font-semibold mb-4">Select a Tip</h3>
-              <select
-                value={selectedTip.id}
-                onChange={(e) => {
-                  const tip = mockTips.find(t => t.id === parseInt(e.target.value));
-                  if (tip) setSelectedTip(tip);
-                }}
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {mockTips.map(tip => (
-                  <option key={tip.id} value={tip.id}>
-                    {tip.title}
-                  </option>
-                ))}
-              </select>
+              <h3 className="font-semibold mb-4">Mode</h3>
+              <div className="space-y-2">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    checked={!isCustomMode}
+                    onChange={() => setIsCustomMode(false)}
+                    className="mr-2"
+                  />
+                  <span>Preview Existing Tips</span>
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    checked={isCustomMode}
+                    onChange={() => setIsCustomMode(true)}
+                    className="mr-2"
+                  />
+                  <span>Create Custom PDF</span>
+                </label>
+              </div>
+            </div>
+
+            {!isCustomMode ? (
+              /* Existing tip selector */
+              <div className="bg-white rounded-lg shadow p-6 mb-6">
+                <h3 className="font-semibold mb-4">Select a Tip</h3>
+                <select
+                  value={selectedTip.id}
+                  onChange={(e) => {
+                    const tip = mockTips.find(t => t.id === parseInt(e.target.value));
+                    if (tip) setSelectedTip(tip);
+                  }}
+                  className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {mockTips.map(tip => (
+                    <option key={tip.id} value={tip.id}>
+                      {tip.title}
+                    </option>
+                  ))}
+                </select>
               
               {selectedTip && (
                 <div className="mt-4 space-y-2 text-sm">
@@ -369,6 +232,12 @@ const TipsTemplatePreview: React.FC = () => {
                 </div>
               )}
             </div>
+            ) : (
+              /* Custom PDF Creation Form - Single Input with AI */
+              <div className="bg-white rounded-lg shadow p-6 mb-6">
+                <CustomPDFGenerator onGenerate={(tip) => setSelectedTip(tip)} />
+              </div>
+            )}
 
             {/* Template selector */}
             <div className="bg-white rounded-lg shadow p-6">
@@ -459,10 +328,20 @@ const TipsTemplatePreview: React.FC = () => {
             </div>
 
             {/* Action buttons */}
-            <div className="mt-6 flex gap-4">
-              <button className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+            <div className="mt-6 flex gap-4 flex-wrap">
+              <button 
+                onClick={() => setShowExportModal(true)}
+                className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+              >
                 <Download className="w-5 h-5" />
-                Download Template
+                {isCustomMode ? 'Export Custom PDF' : 'Export This Tip'}
+              </button>
+              <button 
+                onClick={() => setShowBatchExportModal(true)}
+                className="flex items-center gap-2 bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors"
+              >
+                <Package className="w-5 h-5" />
+                Batch Export All
               </button>
               <button className="flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors">
                 <Eye className="w-5 h-5" />
@@ -477,7 +356,71 @@ const TipsTemplatePreview: React.FC = () => {
         </div>
       </div>
 
+      {/* Modern PDF Template Section */}
+      <div className="bg-gray-50 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <FileText className="w-8 h-8 text-blue-600" />
+              <h2 className="text-3xl font-bold text-gray-900">Modern PDF Templates 2025</h2>
+            </div>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Experience our completely redesigned PDF templates featuring modern typography, 
+              professional color schemes, and intelligent layout systems optimized for AI-generated content.
+            </p>
+          </div>
+          
+          {/* PDF template preview integrated into the main preview area */}
+          
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+            <div className="text-center">
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Palette className="w-6 h-6 text-blue-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Modern Color System</h3>
+                <p className="text-gray-600">Sophisticated color palettes with high contrast ratios following 2025 design standards.</p>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <div className="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Layout className="w-6 h-6 text-emerald-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Smart Grid System</h3>
+                <p className="text-gray-600">Professional spacing using golden ratio principles and modular scale for perfect alignment.</p>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <FileText className="w-6 h-6 text-purple-600" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Adaptive Typography</h3>
+                <p className="text-gray-600">Intelligent font sizing and line spacing that adapts to content length for optimal readability.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <Footer />
+
+      {/* Export Modals */}
+      <ExportDownloadModal
+        isOpen={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        tip={selectedTip}
+      />
+
+      <BatchExportModal
+        isOpen={showBatchExportModal}
+        onClose={() => setShowBatchExportModal(false)}
+        tips={mockTips}
+      />
     </div>
   );
 };

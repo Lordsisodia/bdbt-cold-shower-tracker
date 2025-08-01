@@ -1,114 +1,97 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navigation from '../components/landing/Navigation';
 import Footer from '../components/landing/Footer';
 import { Play, Pause, Volume2, Clock, Calendar, Headphones, Youtube, Podcast as PodcastIcon, Share2, Heart, Download, TrendingUp, Mic, Filter } from 'lucide-react';
-
-interface Episode {
-  id: string;
-  title: string;
-  description: string;
-  duration: string;
-  date: string;
-  category: string;
-  views: string;
-  thumbnail: string;
-  featured?: boolean;
-  platforms: {
-    youtube?: string;
-    spotify?: string;
-    apple?: string;
-  };
-}
+import { podcastService, type PodcastEpisode, type EpisodeFilters, type PodcastStats } from '../services/podcastService';
+import { format } from 'date-fns';
 
 const PodcastPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'mindset' | 'business' | 'health' | 'relationships'>('all');
-  const [playingEpisode, setPlayingEpisode] = useState<string | null>(null);
+  const [playingEpisode, setPlayingEpisode] = useState<number | null>(null);
+  const [episodes, setEpisodes] = useState<PodcastEpisode[]>([]);
+  const [featuredEpisode, setFeaturedEpisode] = useState<PodcastEpisode | null>(null);
+  const [podcastStats, setPodcastStats] = useState<PodcastStats | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const featuredEpisode: Episode = {
-    id: 'featured',
-    title: "How I Built a $1M Business in 12 Months",
-    description: "In this powerful episode, we break down the exact blueprint I used to scale from zero to seven figures. Learn the mindset shifts, daily habits, and strategic moves that made it possible.",
-    duration: "45:32",
-    date: "2024-01-15",
-    category: "business",
-    views: "125K",
-    thumbnail: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=450&fit=crop",
-    featured: true,
-    platforms: {
-      youtube: "#",
-      spotify: "#",
-      apple: "#"
+  // Load initial data
+  useEffect(() => {
+    loadFeaturedEpisode();
+    loadPodcastStats();
+  }, []);
+
+  // Load episodes when category changes
+  useEffect(() => {
+    setPage(1);
+    loadEpisodes();
+  }, [selectedCategory]);
+  
+  // Load more episodes when page changes
+  useEffect(() => {
+    if (page > 1) {
+      loadEpisodes();
+    }
+  }, [page]);
+
+  const loadFeaturedEpisode = async () => {
+    try {
+      const episode = await podcastService.getFeaturedEpisode();
+      setFeaturedEpisode(episode);
+    } catch (error) {
+      console.error('Error loading featured episode:', error);
     }
   };
 
-  const episodes: Episode[] = [
-    {
-      id: '1',
-      title: "The Morning Routine That Changed Everything",
-      description: "Discover the 5AM protocol that top performers use to maximize productivity and mental clarity.",
-      duration: "32:18",
-      date: "2024-01-12",
-      category: "mindset",
-      views: "89K",
-      thumbnail: "https://images.unsplash.com/photo-1489533119213-66a5cd877091?w=400&h=225&fit=crop",
-      platforms: { youtube: "#", spotify: "#", apple: "#" }
-    },
-    {
-      id: '2',
-      title: "From Broke to Boss: Real Talk on Financial Freedom",
-      description: "Raw, unfiltered conversation about overcoming financial struggles and building wealth from scratch.",
-      duration: "41:27",
-      date: "2024-01-10",
-      category: "business",
-      views: "102K",
-      thumbnail: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=225&fit=crop",
-      platforms: { youtube: "#", spotify: "#", apple: "#" }
-    },
-    {
-      id: '3',
-      title: "Optimize Your Body, Optimize Your Life",
-      description: "Science-backed strategies for peak physical performance and how it translates to success in all areas.",
-      duration: "38:45",
-      date: "2024-01-08",
-      category: "health",
-      views: "76K",
-      thumbnail: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=225&fit=crop",
-      platforms: { youtube: "#", spotify: "#", apple: "#" }
-    },
-    {
-      id: '4',
-      title: "Building Unshakeable Confidence",
-      description: "Master the psychology of self-belief and learn practical techniques to boost your confidence daily.",
-      duration: "29:56",
-      date: "2024-01-05",
-      category: "mindset",
-      views: "93K",
-      thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=225&fit=crop",
-      platforms: { youtube: "#", spotify: "#", apple: "#" }
-    },
-    {
-      id: '5',
-      title: "The Art of High-Value Relationships",
-      description: "How to attract and maintain relationships that elevate your life and support your growth journey.",
-      duration: "35:22",
-      date: "2024-01-03",
-      category: "relationships",
-      views: "67K",
-      thumbnail: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&h=225&fit=crop",
-      platforms: { youtube: "#", spotify: "#", apple: "#" }
-    },
-    {
-      id: '6',
-      title: "Mastering the Side Hustle Game",
-      description: "Turn your skills into income streams with proven strategies for building profitable side businesses.",
-      duration: "43:11",
-      date: "2024-01-01",
-      category: "business",
-      views: "114K",
-      thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=225&fit=crop",
-      platforms: { youtube: "#", spotify: "#", apple: "#" }
+  const loadEpisodes = async () => {
+    try {
+      setLoading(true);
+      const filters: EpisodeFilters = {
+        category: selectedCategory,
+        page,
+        limit: 6
+      };
+
+      const result = await podcastService.getEpisodes(filters);
+      if (page === 1) {
+        setEpisodes(result.episodes);
+      } else {
+        setEpisodes([...episodes, ...result.episodes]);
+      }
+      setTotalPages(result.totalPages);
+    } catch (error) {
+      console.error('Error loading episodes:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  const loadPodcastStats = async () => {
+    try {
+      const stats = await podcastService.getPodcastStats();
+      setPodcastStats(stats);
+    } catch (error) {
+      console.error('Error loading podcast stats:', error);
+    }
+  };
+
+  const handlePlayEpisode = async (episodeId: number) => {
+    setPlayingEpisode(playingEpisode === episodeId ? null : episodeId);
+    
+    // Increment view count
+    if (playingEpisode !== episodeId) {
+      await podcastService.incrementViewCount(episodeId);
+    }
+  };
+
+  const formatViewCount = (views: number): string => {
+    if (views >= 1000000) {
+      return `${(views / 1000000).toFixed(1)}M`;
+    } else if (views >= 1000) {
+      return `${(views / 1000).toFixed(0)}K`;
+    }
+    return views.toString();
+  };
 
   const categories = [
     { id: 'all', label: 'All Episodes' },
@@ -123,10 +106,10 @@ const PodcastPage: React.FC = () => {
   );
 
   const stats = [
-    { value: '2M+', label: 'Downloads', icon: Download },
-    { value: '150+', label: 'Episodes', icon: Mic },
-    { value: '4.9', label: 'Rating', icon: TrendingUp },
-    { value: '50K+', label: 'Subscribers', icon: Heart }
+    { value: podcastStats?.totalDownloads || '0', label: 'Downloads', icon: Download },
+    { value: podcastStats?.totalEpisodes.toString() || '0', label: 'Episodes', icon: Mic },
+    { value: podcastStats?.averageRating.toString() || '0', label: 'Rating', icon: TrendingUp },
+    { value: podcastStats?.totalSubscribers || '0', label: 'Subscribers', icon: Heart }
   ];
 
   return (
@@ -199,61 +182,78 @@ const PodcastPage: React.FC = () => {
             <p className="text-xl text-gray-600">Our most impactful conversation yet</p>
           </div>
 
-          <div className="bg-gradient-to-br from-gray-900 to-blue-900 rounded-3xl overflow-hidden shadow-2xl">
-            <div className="grid lg:grid-cols-2">
-              {/* Video/Thumbnail */}
-              <div className="relative aspect-video lg:aspect-auto">
-                <img 
-                  src={featuredEpisode.thumbnail} 
-                  alt={featuredEpisode.title}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <button 
-                    onClick={() => setPlayingEpisode(featuredEpisode.id)}
-                    className="w-20 h-20 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-all duration-300 transform hover:scale-110"
-                  >
-                    <Play className="w-8 h-8 text-gray-900 ml-1" />
-                  </button>
-                </div>
-                <div className="absolute top-4 left-4 bg-red-600 text-white px-4 py-2 rounded-full text-sm font-medium">
-                  LATEST EPISODE
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-8 lg:p-12 text-white space-y-6">
-                <div className="flex items-center gap-4 text-sm text-gray-300">
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-4 h-4" />
-                    {featuredEpisode.date}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-4 h-4" />
-                    {featuredEpisode.duration}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <TrendingUp className="w-4 h-4" />
-                    {featuredEpisode.views} views
-                  </span>
+          {featuredEpisode ? (
+            <div className="bg-gradient-to-br from-gray-900 to-blue-900 rounded-3xl overflow-hidden shadow-2xl">
+              <div className="grid lg:grid-cols-2">
+                {/* Video/Thumbnail */}
+                <div className="relative aspect-video lg:aspect-auto">
+                  <img 
+                    src={featuredEpisode.thumbnail_url || 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=450&fit=crop'} 
+                    alt={featuredEpisode.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                    <button 
+                      onClick={() => handlePlayEpisode(featuredEpisode.id)}
+                      className="w-20 h-20 bg-white/90 rounded-full flex items-center justify-center hover:bg-white transition-all duration-300 transform hover:scale-110"
+                    >
+                      {playingEpisode === featuredEpisode.id ? (
+                        <Pause className="w-8 h-8 text-gray-900" />
+                      ) : (
+                        <Play className="w-8 h-8 text-gray-900 ml-1" />
+                      )}
+                    </button>
+                  </div>
+                  <div className="absolute top-4 left-4 bg-red-600 text-white px-4 py-2 rounded-full text-sm font-medium">
+                    {featuredEpisode.is_featured ? 'FEATURED' : 'LATEST EPISODE'}
+                  </div>
                 </div>
 
-                <h3 className="text-3xl font-bold">{featuredEpisode.title}</h3>
-                <p className="text-gray-200 text-lg">{featuredEpisode.description}</p>
+                {/* Content */}
+                <div className="p-8 lg:p-12 text-white space-y-6">
+                  <div className="flex items-center gap-4 text-sm text-gray-300">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      {format(new Date(featuredEpisode.published_date), 'MMM dd, yyyy')}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-4 h-4" />
+                      {featuredEpisode.duration}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <TrendingUp className="w-4 h-4" />
+                      {formatViewCount(featuredEpisode.views_count)} views
+                    </span>
+                  </div>
 
-                <div className="flex gap-4 pt-4">
-                  <button className="flex items-center gap-2 bg-white text-gray-900 px-6 py-3 rounded-full hover:bg-gray-100 transition-all duration-300">
-                    <Play className="w-5 h-5" />
-                    Watch Now
-                  </button>
-                  <button className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-6 py-3 rounded-full hover:bg-white/20 transition-all duration-300">
-                    <Share2 className="w-5 h-5" />
-                    Share
-                  </button>
+                  <h3 className="text-3xl font-bold">{featuredEpisode.title}</h3>
+                  <p className="text-gray-200 text-lg">{featuredEpisode.description}</p>
+
+                  <div className="flex gap-4 pt-4">
+                    {featuredEpisode.youtube_url && (
+                      <a 
+                        href={featuredEpisode.youtube_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 bg-white text-gray-900 px-6 py-3 rounded-full hover:bg-gray-100 transition-all duration-300"
+                      >
+                        <Youtube className="w-5 h-5" />
+                        Watch Now
+                      </a>
+                    )}
+                    <button className="flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-6 py-3 rounded-full hover:bg-white/20 transition-all duration-300">
+                      <Share2 className="w-5 h-5" />
+                      Share
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-gray-500">Loading featured episode...</p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -283,79 +283,99 @@ const PodcastPage: React.FC = () => {
           </div>
 
           {/* Episodes Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredEpisodes.map((episode) => (
-              <div
-                key={episode.id}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group"
-              >
-                {/* Thumbnail */}
-                <div className="relative aspect-video overflow-hidden">
-                  <img 
-                    src={episode.thumbnail} 
-                    alt={episode.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <button 
-                      onClick={() => setPlayingEpisode(episode.id)}
-                      className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-transform duration-300"
-                    >
-                      {playingEpisode === episode.id ? (
-                        <Pause className="w-6 h-6 text-gray-900" />
-                      ) : (
-                        <Play className="w-6 h-6 text-gray-900 ml-1" />
-                      )}
-                    </button>
-                  </div>
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-black/70 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm">
-                      {episode.duration}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-6 space-y-4">
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <span>{episode.date}</span>
-                    <span>{episode.views} views</span>
-                  </div>
-
-                  <h3 className="text-xl font-bold text-gray-900 line-clamp-2">
-                    {episode.title}
-                  </h3>
-
-                  <p className="text-gray-600 line-clamp-2">
-                    {episode.description}
-                  </p>
-
-                  <div className="flex items-center justify-between pt-2">
-                    <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm capitalize">
-                      {episode.category}
-                    </span>
-
-                    <div className="flex gap-2">
-                      <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                        <Heart className="w-5 h-5 text-gray-600" />
+          {loading && page === 1 ? (
+            <div className="text-center py-12">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+              <p className="mt-4 text-gray-600">Loading episodes...</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {episodes.map((episode) => (
+                <div
+                  key={episode.id}
+                  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group"
+                >
+                  {/* Thumbnail */}
+                  <div className="relative aspect-video overflow-hidden">
+                    <img 
+                      src={episode.thumbnail_url || 'https://images.unsplash.com/photo-1489533119213-66a5cd877091?w=400&h=225&fit=crop'} 
+                      alt={episode.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <button 
+                        onClick={() => handlePlayEpisode(episode.id)}
+                        className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-transform duration-300"
+                      >
+                        {playingEpisode === episode.id ? (
+                          <Pause className="w-6 h-6 text-gray-900" />
+                        ) : (
+                          <Play className="w-6 h-6 text-gray-900 ml-1" />
+                        )}
                       </button>
-                      <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                        <Share2 className="w-5 h-5 text-gray-600" />
-                      </button>
+                    </div>
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-black/70 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm">
+                        {episode.duration}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-6 space-y-4">
+                    <div className="flex items-center justify-between text-sm text-gray-500">
+                      <span>{format(new Date(episode.published_date), 'MMM dd, yyyy')}</span>
+                      <span>{formatViewCount(episode.views_count)} views</span>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-gray-900 line-clamp-2">
+                      {episode.title}
+                    </h3>
+
+                    <p className="text-gray-600 line-clamp-2">
+                      {episode.description}
+                    </p>
+
+                    <div className="flex items-center justify-between pt-2">
+                      <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm capitalize">
+                        {episode.category}
+                      </span>
+
+                      <div className="flex gap-2">
+                        {episode.youtube_url && (
+                          <a 
+                            href={episode.youtube_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                          >
+                            <Youtube className="w-5 h-5 text-gray-600" />
+                          </a>
+                        )}
+                        <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                          <Share2 className="w-5 h-5 text-gray-600" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           {/* Load More */}
-          <div className="text-center mt-12">
-            <button className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-colors">
-              <Volume2 className="w-5 h-5" />
-              Load More Episodes
-            </button>
-          </div>
+          {page < totalPages && (
+            <div className="text-center mt-12">
+              <button 
+                onClick={() => setPage(page + 1)}
+                disabled={loading}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gray-900 text-white rounded-full hover:bg-gray-800 transition-colors disabled:opacity-50"
+              >
+                <Volume2 className="w-5 h-5" />
+                {loading ? 'Loading...' : 'Load More Episodes'}
+              </button>
+            </div>
+          )}
         </div>
       </section>
 

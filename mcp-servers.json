@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "bdbt-supabase": {
+      "command": "node",
+      "args": ["./.mcp/supabase-server.js"],
+      "cwd": "/Users/shaansisodia/Desktop/Cursor/SIDE-QUEST-CLIENTS/bdbt",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  }
+}

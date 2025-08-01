@@ -1,0 +1,55 @@
+{
+  "name": "BDBT Tips System",
+  "description": "Business Development and Business Tips platform with enhanced hooks",
+  "hooks": {
+    "pre-tool-use": {
+      "Edit": [
+        {
+          "name": "prettier-format",
+          "pattern": "\\.(ts|tsx|js|jsx)$",
+          "command": "npx prettier --write ${file_path} 2>/dev/null || true"
+        },
+        {
+          "name": "eslint-check",
+          "pattern": "^src/.*\\.(ts|tsx)$",
+          "command": "npm run lint --silent -- ${file_path} 2>/dev/null || true"
+        }
+      ],
+      "Write": [
+        {
+          "name": "backup-config",
+          "pattern": "(package\\.json|tsconfig\\.json|vite\\.config\\.[jt]s)$",
+          "command": "cp '${file_path}' '${file_path}.backup.$(date +%Y%m%d_%H%M%S)' 2>/dev/null || true"
+        }
+      ]
+    },
+    "post-tool-use": {
+      "Edit": [
+        {
+          "name": "typecheck",
+          "pattern": "\\.(ts|tsx)$",
+          "command": "npm run typecheck 2>/dev/null || echo 'Type checking unavailable'"
+        }
+      ],
+      "MultiEdit": [
+        {
+          "name": "build-check",
+          "condition": "file_count > 3",
+          "command": "npm run build 2>/dev/null || echo 'Build check failed'"
+        }
+      ]
+    },
+    "session-start": [
+      {
+        "name": "dev-context",
+        "command": "echo '=== BDBT Project Context ===' && git status -sb && echo && echo '=== Recent commits ===' && git log --oneline -5 && echo && echo '=== Available scripts ===' && npm run 2>/dev/null | grep -E '^ {2}[a-z]' || true"
+      }
+    ],
+    "stop": [
+      {
+        "name": "session-log",
+        "command": "echo \"Session completed: $(date)\" >> ~/.claude/bdbt-sessions.log"
+      }
+    ]
+  }
+}

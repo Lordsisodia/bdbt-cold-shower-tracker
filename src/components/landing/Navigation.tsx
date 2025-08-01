@@ -18,6 +18,7 @@ const Navigation: React.FC = () => {
   }, []);
 
   const location = useLocation();
+  const isHomePage = location.pathname === '/';
   
   const navItems = [
     { label: 'Home', href: '/' },
@@ -31,7 +32,7 @@ const Navigation: React.FC = () => {
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white/95 backdrop-blur-lg shadow-lg' : 'bg-transparent'
+      isScrolled || !isHomePage ? 'bg-white/95 backdrop-blur-lg shadow-lg' : 'bg-transparent'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
@@ -39,7 +40,7 @@ const Navigation: React.FC = () => {
             <Link to="/" className="flex items-center space-x-2 group">
               <div className="relative">
                 <span className={`text-3xl font-bold transition-colors duration-300 ${
-                  isScrolled ? 'text-gray-900' : 'text-white'
+                  isScrolled || !isHomePage ? 'text-gray-900' : 'text-white'
                 }`}>
                   BD<span className="text-blue-600">BT</span>
                 </span>
@@ -55,7 +56,7 @@ const Navigation: React.FC = () => {
                 to={item.href}
                 className={`relative text-sm font-medium transition-colors duration-200 hover:text-blue-600 ${
                   location.pathname === item.href ? 'text-blue-600' : 
-                  isScrolled ? 'text-gray-700' : 'text-white/90 hover:text-white'
+                  isScrolled || !isHomePage ? 'text-gray-700' : 'text-white/90 hover:text-white'
                 }`}
               >
                 {item.label}
@@ -67,7 +68,7 @@ const Navigation: React.FC = () => {
             <button 
               onClick={() => setShowGetStartedModal(true)}
               className={`group flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
-                isScrolled 
+                isScrolled || !isHomePage
                   ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg' 
                   : 'bg-white/10 backdrop-blur-sm text-white border border-white/20 hover:bg-white/20'
               }`}
@@ -81,7 +82,7 @@ const Navigation: React.FC = () => {
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={`transition-colors duration-200 ${
-                isScrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white'
+                isScrolled || !isHomePage ? 'text-gray-700 hover:text-blue-600' : 'text-white'
               }`}
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}

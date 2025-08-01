@@ -29,6 +29,77 @@ export function generateTipImageUrl(tip: { id: string; category: string; title: 
   return `https://source.unsplash.com/800x400/?${query}`;
 }
 
+// Generate social media preview image (1200x630 for OpenGraph)
+export function generateSocialPreviewSVG(tip: { category: string; title: string; difficulty: string }): string {
+  const colors = {
+    health: { primary: '#10b981', secondary: '#34d399', light: '#d1fae5' },
+    wealth: { primary: '#f59e0b', secondary: '#fbbf24', light: '#fef3c7' },
+    happiness: { primary: '#8b5cf6', secondary: '#a78bfa', light: '#ede9fe' }
+  };
+  
+  const categoryColor = colors[tip.category as keyof typeof colors] || colors.health;
+  
+  const difficultyColors = {
+    Easy: '#22c55e',
+    Moderate: '#f59e0b', 
+    Advanced: '#ef4444'
+  };
+  
+  const difficultyColor = difficultyColors[tip.difficulty as keyof typeof difficultyColors] || '#6b7280';
+  
+  return `data:image/svg+xml;base64,${btoa(`
+    <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:${categoryColor.primary}" />
+          <stop offset="100%" style="stop-color:${categoryColor.secondary}" />
+        </linearGradient>
+        <pattern id="pattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+          <rect width="20" height="20" fill="${categoryColor.light}" opacity="0.1"/>
+        </pattern>
+      </defs>
+      
+      <!-- Background -->
+      <rect width="1200" height="630" fill="url(#bgGradient)"/>
+      <rect width="1200" height="630" fill="url(#pattern)"/>
+      
+      <!-- Brand Section -->
+      <text x="60" y="80" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="bold" fill="white">BDBT</text>
+      <text x="60" y="110" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="rgba(255,255,255,0.9)">Better Days, Better Tomorrow</text>
+      
+      <!-- Title (centered, word-wrapped) -->
+      <foreignObject x="60" y="200" width="1080" height="300">
+        <div xmlns="http://www.w3.org/1999/xhtml" style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+          text-align: center;
+          color: white;
+          font-family: system-ui, -apple-system, sans-serif;
+          font-size: 48px;
+          font-weight: bold;
+          line-height: 1.2;
+          padding: 0 40px;
+        ">
+          ${tip.title}
+        </div>
+      </foreignObject>
+      
+      <!-- Category Badge -->
+      <rect x="60" y="450" width="140" height="40" rx="20" fill="rgba(255,255,255,0.2)"/>
+      <text x="130" y="475" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">${tip.category.toUpperCase()}</text>
+      
+      <!-- Difficulty Badge -->
+      <rect x="220" y="450" width="120" height="40" rx="20" fill="${difficultyColor}"/>
+      <text x="280" y="475" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">${tip.difficulty}</text>
+      
+      <!-- Bottom Branding -->
+      <text x="1140" y="570" font-family="system-ui, -apple-system, sans-serif" font-size="16" fill="rgba(255,255,255,0.8)" text-anchor="end">bdbt.com</text>
+    </svg>
+  `)}`
+}
+
 export function generatePlaceholderSVG(tip: { category: string; title: string }): string {
   const colors = {
     health: '#22c55e',

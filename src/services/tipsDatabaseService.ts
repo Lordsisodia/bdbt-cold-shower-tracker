@@ -1,10 +1,25 @@
 import { createClient } from '@supabase/supabase-js';
 import { RealTip, generateCompleteTipDatabase } from '../data/realTipsCollection';
+import { createConfiguredSupabaseClient, getMockData } from '../utils/supabaseConfig';
 
-// Supabase client setup
-const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || '';
-const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseKey);
+// Supabase client setup with fallback
+import { validateSupabaseConfig } from '../utils/supabaseConfig';
+
+const config = validateSupabaseConfig();
+let supabase: ReturnType<typeof createClient> | null = null;
+let useMockData = !config.isConfigured;
+
+if (config.isConfigured) {
+  try {
+    supabase = createConfiguredSupabaseClient();
+    console.log('✅ Supabase connected successfully');
+  } catch (error) {
+    console.warn('⚠️ Supabase connection failed, using mock data:', error);
+    useMockData = true;
+  }
+} else {
+  console.warn('⚠️ Supabase not configured, using mock data:', config.errors);
+}
 
 export interface DatabaseTip {
   id?: number;
@@ -30,6 +45,7 @@ export interface DatabaseTip {
   rating?: number;
   is_featured?: boolean;
   status?: string;
+  slug?: string;
 }
 
 export class TipsDatabaseService {
@@ -46,7 +62,7 @@ export class TipsDatabaseService {
       
       try {
         const { data, error } = await supabase
-          .from('tips')
+          .from('bdbt_tips')
           .insert(
             batch.map(tip => this.convertToDatabaseFormat(tip))
           );
@@ -96,7 +112,7 @@ export class TipsDatabaseService {
   private async importRelatedData(tips: RealTip[]): Promise<void> {
     // Get all tip IDs from database
     const { data: dbTips } = await supabase
-      .from('tips')
+      .from('bdbt_tips')
       .select('id, title');
 
     if (!dbTips) return;
@@ -170,16 +186,54 @@ export class TipsDatabaseService {
     category?: string;
     difficulty?: string;
     subcategory?: string;
+    status?: string;
     searchTerm?: string;
     limit?: number;
     offset?: number;
+    page?: number;
+    sortBy?: string;
+    sortDirection?: 'asc' | 'desc';
   }): Promise<{ tips: DatabaseTip[]; total: number }> {
-    let query = supabase
-      .from('tips')
-      .select('*', { count: 'exact' })
-      .eq('status', 'published');
+    
+    // Use mock data if Supabase is not configured
+    if (useMockData || !supabase) {
+      const mockData = getMockData();
+      let filteredTips = mockData.tips;
+      
+      // Apply filters to mock data
+      if (filters?.category) {
+        filteredTips = filteredTips.filter(tip => tip.category === filters.category);
+      }
+      if (filters?.difficulty) {
+        filteredTips = filteredTips.filter(tip => tip.difficulty === filters.difficulty);
+      }
+      if (filters?.searchTerm) {
+        const searchLower = filters.searchTerm.toLowerCase();
+        filteredTips = filteredTips.filter(tip => 
+          tip.title.toLowerCase().includes(searchLower) ||
+          tip.subtitle.toLowerCase().includes(searchLower) ||
+          tip.description.toLowerCase().includes(searchLower)
+        );
+      }
+      
+      // Apply pagination
+      const limit = filters?.limit || 20;
+      const offset = filters?.offset || 0;
+      const paginatedTips = filteredTips.slice(offset, offset + limit);
+      
+      return {
+        tips: paginatedTips as DatabaseTip[],
+        total: filteredTips.length
+      };
+    }
 
-    if (filters?.category) {
+    // Use real Supabase data
+    let query = supabase
+      .from('bdbt_tips')
+      .select('*', { count: 'exact' });
+
+    // Apply filters
+    if (filters?.category && filters.category !== 'all') {
       query = query.eq('category', filters.category);
     }
     if (filters?.difficulty) {
@@ -188,13 +242,23 @@ export class TipsDatabaseService {
     if (filters?.subcategory) {
       query = query.eq('subcategory', filters.subcategory);
     }
+    if (filters?.status && filters.status !== 'all') {
+      query = query.eq('status', filters.status);
+    }
     if (filters?.searchTerm) {
       query = query.or(`title.ilike.%${filters.searchTerm}%,subtitle.ilike.%${filters.searchTerm}%,description.ilike.%${filters.searchTerm}%`);
     }
 
-    // Pagination
+    // Apply sorting
+    const sortBy = filters?.sortBy || 'created_at';
+    const sortDirection = filters?.sortDirection || 'desc';
+    const ascending = sortDirection === 'asc';
+    query = query.order(sortBy, { ascending });
+
+    // Apply pagination
     const limit = filters?.limit || 20;
-    const offset = filters?.offset || 0;
+    const page = filters?.page || 1;
+    const offset = (page - 1) * limit;
     query = query.range(offset, offset + limit - 1);
 
     const { data, error, count } = await query;
@@ -213,7 +277,7 @@ export class TipsDatabaseService {
   // Get single tip with all related data
   async getTipById(id: number): Promise<any> {
     const { data: tip, error } = await supabase
-      .from('tips')
+      .from('bdbt_tips')
       .select(`
         *,
         tip_includes (item, order_index),
@@ -246,8 +310,29 @@ export class TipsDatabaseService {
 
   // Get tip statistics
   async getTipStats(): Promise<any> {
+    // Use mock data if Supabase is not configured
+    if (useMockData || !supabase) {
+      const mockData = getMockData();
+      const data = mockData.tips;
+      
+      return {
+        total: data.length,
+        byCategory: {
+          health: data.filter(t => t.category === 'health').length,
+          wealth: data.filter(t => t.category === 'wealth').length,
+          happiness: data.filter(t => t.category === 'happiness').length
+        },
+        byDifficulty: {
+          Easy: data.filter(t => t.difficulty === 'Easy').length,
+          Moderate: data.filter(t => t.difficulty === 'Moderate').length,
+          Advanced: data.filter(t => t.difficulty === 'Advanced').length
+        }
+      };
+    }
+
+    // Use real Supabase data
     const { data, error } = await supabase
-      .from('tips')
+      .from('bdbt_tips')
       .select('category, difficulty')
       .eq('status', 'published');
 
@@ -275,7 +360,7 @@ export class TipsDatabaseService {
   // Export tips for Canva or other services
   async exportTipsForCanva(tipIds?: number[]): Promise<any[]> {
     let query = supabase
-      .from('tips')
+      .from('bdbt_tips')
       .select(`
         *,
         tip_includes (item, order_index)
@@ -319,6 +404,116 @@ export class TipsDatabaseService {
     }));
   }
 
+  // Generate SEO-friendly slug from title
+  private generateSlug(title: string): string {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/-+/g, '-') // Replace multiple hyphens with single
+      .trim();
+  }
+
+  // Get tip by slug
+  async getTipBySlug(slug: string): Promise<DatabaseTip | null> {
+    if (useMockData || !supabase) {
+      const mockData = getMockData();
+      const tip = mockData.tips.find(t => 
+        this.generateSlug(t.title) === slug && 
+        t.status === 'published'
+      );
+      return tip || null;
+    }
+
+    const { data: tip, error } = await supabase
+      .from('bdbt_tips')
+      .select(`
+        *,
+        tip_includes (item, order_index),
+        tip_metrics (metric_type, metric_value, metric_unit, source),
+        tip_resources (resource_type, title, url, description, is_free)
+      `)
+      .eq('slug', slug)
+      .eq('status', 'published')
+      .single();
+
+    if (error) {
+      console.error('Error fetching tip by slug:', error);
+      return null;
+    }
+
+    // Increment view count
+    if (tip?.id) {
+      await this.incrementViewCount(tip.id);
+    }
+
+    return tip;
+  }
+
+  // Update tip with slug if missing
+  async updateTipSlug(tipId: number, title: string): Promise<void> {
+    if (useMockData || !supabase) {
+      return;
+    }
+
+    const slug = this.generateSlug(title);
+    
+    const { error } = await supabase
+      .from('bdbt_tips')
+      .update({ slug })
+      .eq('id', tipId);
+
+    if (error) {
+      console.error('Error updating tip slug:', error);
+    }
+  }
+
+  // Get all published tips with slugs
+  async getPublishedTipsWithSlugs(): Promise<{ tips: DatabaseTip[]; total: number }> {
+    if (useMockData || !supabase) {
+      const mockData = getMockData();
+      const publishedTips = mockData.tips
+        .filter(tip => tip.status === 'published')
+        .map(tip => ({
+          ...tip,
+          slug: this.generateSlug(tip.title)
+        }));
+      
+      return {
+        tips: publishedTips,
+        total: publishedTips.length
+      };
+    }
+
+    const { data: tips, error } = await supabase
+      .from('bdbt_tips')
+      .select('*')
+      .eq('status', 'published')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching published tips:', error);
+      return { tips: [], total: 0 };
+    }
+
+    // Update any tips missing slugs
+    const tipsWithSlugs = await Promise.all(
+      tips.map(async (tip) => {
+        if (!tip.slug) {
+          const slug = this.generateSlug(tip.title);
+          await this.updateTipSlug(tip.id, tip.title);
+          return { ...tip, slug };
+        }
+        return tip;
+      })
+    );
+
+    return {
+      tips: tipsWithSlugs,
+      total: tipsWithSlugs.length
+    };
+  }
+
   // Get category colors for design
   private getCategoryColors(category: string): any {
     const colors = {
@@ -359,6 +554,146 @@ export class TipsDatabaseService {
       'happiness-Advanced': 'template_happiness_advanced'
     };
     return templates[`${category}-${difficulty}`] || 'template_default';
+  }
+
+  // Approval workflow methods
+  async updateTipStatus(tipId: number, status: 'draft' | 'pending' | 'approved' | 'published' | 'rejected'): Promise<void> {
+    if (useMockData) {
+      console.log(`Mock: Updated tip ${tipId} status to ${status}`);
+      return;
+    }
+
+    if (!supabase) throw new Error('Database not available');
+
+    try {
+      const { error } = await supabase
+        .from('bdbt_tips')
+        .update({ 
+          status,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', tipId);
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error updating tip status:', error);
+      throw error;
+    }
+  }
+
+  async getPublishedTips(filters?: {
+    category?: string;
+    limit?: number;
+    offset?: number;
+    searchTerm?: string;
+  }): Promise<{ tips: DatabaseTip[]; total: number }> {
+    if (useMockData) {
+      const mockTips = getMockData().map(tip => ({ ...tip, status: 'published' }));
+      const filtered = filters?.category 
+        ? mockTips.filter(tip => tip.category === filters.category)
+        : mockTips;
+      
+      const searchFiltered = filters?.searchTerm
+        ? filtered.filter(tip => 
+            tip.title.toLowerCase().includes(filters.searchTerm!.toLowerCase()) ||
+            tip.description.toLowerCase().includes(filters.searchTerm!.toLowerCase())
+          )
+        : filtered;
+
+      const limit = filters?.limit || 50;
+      const offset = filters?.offset || 0;
+      const paged = searchFiltered.slice(offset, offset + limit);
+      
+      return { tips: paged, total: searchFiltered.length };
+    }
+
+    if (!supabase) throw new Error('Database not available');
+
+    try {
+      let query = supabase
+        .from('bdbt_tips')
+        .select('*', { count: 'exact' })
+        .eq('status', 'published');
+
+      if (filters?.category) {
+        query = query.eq('category', filters.category);
+      }
+
+      if (filters?.searchTerm) {
+        query = query.or(`title.ilike.%${filters.searchTerm}%,description.ilike.%${filters.searchTerm}%`);
+      }
+
+      if (filters?.limit) {
+        query = query.limit(filters.limit);
+      }
+
+      if (filters?.offset) {
+        query = query.range(filters.offset, filters.offset + (filters.limit || 50) - 1);
+      }
+
+      const { data, error, count } = await query;
+
+      if (error) throw error;
+
+      return { tips: data || [], total: count || 0 };
+    } catch (error) {
+      console.error('Error getting published tips:', error);
+      throw error;
+    }
+  }
+
+  async getTipsByStatus(status: 'draft' | 'pending' | 'approved' | 'published' | 'rejected'): Promise<DatabaseTip[]> {
+    if (useMockData) {
+      return getMockData().map(tip => ({ ...tip, status }));
+    }
+
+    if (!supabase) throw new Error('Database not available');
+
+    try {
+      const { data, error } = await supabase
+        .from('bdbt_tips')
+        .select('*')
+        .eq('status', status)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error getting tips by status:', error);
+      throw error;
+    }
+  }
+
+  async publishTip(tipId: number): Promise<void> {
+    await this.updateTipStatus(tipId, 'published');
+  }
+
+  async unpublishTip(tipId: number): Promise<void> {
+    await this.updateTipStatus(tipId, 'draft');
+  }
+
+  async approveTip(tipId: number): Promise<void> {
+    await this.updateTipStatus(tipId, 'approved');
+  }
+
+  async rejectTip(tipId: number): Promise<void> {
+    await this.updateTipStatus(tipId, 'rejected');
+  }
+
+  async deleteTip(tipId: number): Promise<void> {
+    if (!supabase) throw new Error('Database not available');
+
+    try {
+      const { error } = await supabase
+        .from('bdbt_tips')
+        .delete()
+        .eq('id', tipId);
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error deleting tip:', error);
+      throw error;
+    }
   }
 }
 

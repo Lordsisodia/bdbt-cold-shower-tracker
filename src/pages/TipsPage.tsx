@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navigation from '../components/landing/Navigation';
 import Footer from '../components/landing/Footer';
 import { Download, Clock, ChevronDown, Search, Filter, BookOpen, Star } from 'lucide-react';
 import { downloadTip } from '../utils/downloadUtils';
+import { DatabaseTip, tipsDatabaseService } from '../services/tipsDatabaseService';
+import TagFilterSystem from '../components/tips/TagFilterSystem';
+import { trackTipView, trackTipDownload, trackSearch, trackFilter } from '../services/analyticsService';
 
 interface Tip {
   id: string;
@@ -21,6 +24,70 @@ const TipsPage: React.FC = () => {
   const [sortBy, setSortBy] = useState<'newest' | 'popular' | 'difficulty'>('newest');
   const [searchQuery, setSearchQuery] = useState('');
   const [showSortDropdown, setShowSortDropdown] = useState(false);
+  const [publishedTips, setPublishedTips] = useState<DatabaseTip[]>([]);
+  const [filteredTips, setFilteredTips] = useState<DatabaseTip[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Load published tips
+  useEffect(() => {
+    const loadTips = async () => {
+      try {
+        setLoading(true);
+        const { tips } = await tipsDatabaseService.getPublishedTips();
+        setPublishedTips(tips);
+        setFilteredTips(tips);
+      } catch (error) {
+        console.error('Error loading tips:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTips();
+  }, []);
+
+  // Track search queries
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      const timeoutId = setTimeout(() => {
+        trackSearch(searchQuery, filteredTips.length, {
+          category: selectedCategory,
+          sortBy
+        });
+      }, 500); // Debounce search tracking
+      
+      return () => clearTimeout(timeoutId);
+    }
+  }, [searchQuery, filteredTips.length, selectedCategory, sortBy]);
+
+  // Track category filter changes
+  const handleCategoryChange = (category: typeof selectedCategory) => {
+    setSelectedCategory(category);
+    trackFilter('category', category, {
+      previousCategory: selectedCategory,
+      searchQuery: searchQuery.trim() || undefined
+    });
+  };
+
+  // Track sort changes
+  const handleSortChange = (sort: typeof sortBy) => {
+    setSortBy(sort);
+    trackFilter('sort', sort, {
+      previousSort: sortBy,
+      category: selectedCategory,
+      searchQuery: searchQuery.trim() || undefined
+    });
+  };
+
+  // Track tip card clicks
+  const handleTipClick = (tip: DatabaseTip) => {
+    trackTipView(tip.id?.toString() || '', {
+      title: tip.title,
+      category: tip.category,
+      difficulty: tip.difficulty,
+      from: 'tips-page'
+    });
+  };
 
   const tips: Tip[] = [
     {
@@ -165,14 +232,14 @@ const TipsPage: React.FC = () => {
     Advanced: 'bg-red-100 text-red-700',
   };
 
-  const filteredTips = tips.filter(tip => {
+  const filteredMockTips = tips.filter(tip => {
     const matchesCategory = selectedCategory === 'all' || tip.category === selectedCategory;
     const matchesSearch = tip.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          tip.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
-  const sortedTips = [...filteredTips].sort((a, b) => {
+  const sortedTips = [...filteredMockTips].sort((a, b) => {
     if (sortBy === 'popular') return (b.downloads || 0) - (a.downloads || 0);
     if (sortBy === 'difficulty') {
       const diffOrder = { Easy: 0, Moderate: 1, Advanced: 2 };
@@ -223,7 +290,7 @@ const TipsPage: React.FC = () => {
             {/* Category Filters */}
             <div className="flex gap-2">
               <button
-                onClick={() => setSelectedCategory('all')}
+                onClick={() => handleCategoryChange('all')}
                 className={`px-6 py-2 rounded-full font-medium transition-all ${
                   selectedCategory === 'all'
                     ? 'bg-gray-900 text-white'
@@ -233,7 +300,7 @@ const TipsPage: React.FC = () => {
                 All Categories
               </button>
               <button
-                onClick={() => setSelectedCategory('health')}
+                onClick={() => handleCategoryChange('health')}
                 className={`px-6 py-2 rounded-full font-medium transition-all ${
                   selectedCategory === 'health'
                     ? 'bg-green-600 text-white'
@@ -243,7 +310,7 @@ const TipsPage: React.FC = () => {
                 Health
               </button>
               <button
-                onClick={() => setSelectedCategory('wealth')}
+                onClick={() => handleCategoryChange('wealth')}
                 className={`px-6 py-2 rounded-full font-medium transition-all ${
                   selectedCategory === 'wealth'
                     ? 'bg-blue-600 text-white'
@@ -253,7 +320,7 @@ const TipsPage: React.FC = () => {
                 Wealth
               </button>
               <button
-                onClick={() => setSelectedCategory('happiness')}
+                onClick={() => handleCategoryChange('happiness')}
                 className={`px-6 py-2 rounded-full font-medium transition-all ${
                   selectedCategory === 'happiness'
                     ? 'bg-purple-600 text-white'
@@ -280,7 +347,7 @@ const TipsPage: React.FC = () => {
                   <div className="py-2">
                     <button
                       onClick={() => {
-                        setSortBy('newest');
+                        handleSortChange('newest');
                         setShowSortDropdown(false);
                       }}
                       className={`w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors ${
@@ -291,7 +358,7 @@ const TipsPage: React.FC = () => {
                     </button>
                     <button
                       onClick={() => {
-                        setSortBy('popular');
+                        handleSortChange('popular');
                         setShowSortDropdown(false);
                       }}
                       className={`w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors ${
@@ -302,7 +369,7 @@ const TipsPage: React.FC = () => {
                     </button>
                     <button
                       onClick={() => {
-                        setSortBy('difficulty');
+                        handleSortChange('difficulty');
                         setShowSortDropdown(false);
                       }}
                       className={`w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors ${
@@ -328,66 +395,103 @@ const TipsPage: React.FC = () => {
       {/* Tips Grid */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {sortedTips.map((tip) => (
-              <div
-                key={tip.id}
-                className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden"
-              >
-                {tip.isFeatured && (
-                  <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white text-sm font-medium px-4 py-2 flex items-center gap-2">
-                    <Star className="w-4 h-4" />
-                    Featured Resource
-                  </div>
-                )}
-                
-                <div className="p-8">
-                  {/* Category & Difficulty Badges */}
-                  <div className="flex gap-2 mb-4">
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium border ${categoryColors[tip.category]}`}>
-                      {tip.category}
-                    </span>
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${difficultyColors[tip.difficulty]}`}>
-                      {tip.difficulty}
-                    </span>
-                  </div>
-
-                  {/* Title & Description */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{tip.title}</h3>
-                  <p className="text-gray-600 mb-6">{tip.description}</p>
-
-                  {/* What's Included */}
-                  <div className="space-y-2 mb-6">
-                    <p className="font-semibold text-gray-900">What's Included:</p>
-                    <ul className="space-y-1">
-                      {tip.includes.map((item, index) => (
-                        <li key={index} className="flex items-start gap-2">
-                          <span className="text-green-500 mt-1">✓</span>
-                          <span className="text-sm text-gray-600">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Footer */}
-                  <div className="flex items-center justify-between pt-6 border-t">
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                      <Clock className="w-4 h-4" />
-                      <span>{tip.readTime} min read</span>
-                    </div>
-                    
-                    <button 
-                      onClick={() => downloadTip(tip.title, tip.description, tip.includes)}
-                      className="group flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105"
-                    >
-                      <Download className="w-4 h-4" />
-                      <span>Download</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+          {/* Filter System */}
+          <div className="mb-12">
+            <TagFilterSystem
+              tips={publishedTips}
+              onFilteredTipsChange={setFilteredTips}
+            />
           </div>
+
+          {/* Results Count */}
+          <div className="mb-8 text-sm text-gray-600">
+            Showing {filteredTips.length} of {publishedTips.length} tips
+          </div>
+
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <p className="mt-4 text-gray-600">Loading tips...</p>
+            </div>
+          ) : filteredTips.length === 0 ? (
+            <div className="text-center py-12">
+              <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">No tips found</h3>
+              <p className="text-gray-600">Try adjusting your filters or search terms.</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredTips.map((tip) => {
+                const slug = tip.title
+                  .toLowerCase()
+                  .replace(/[^a-z0-9\s-]/g, '')
+                  .replace(/\s+/g, '-')
+                  .replace(/-+/g, '-')
+                  .trim();
+
+                return (
+                  <div
+                    key={tip.id}
+                    className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer"
+                    onClick={() => {
+                      handleTipClick(tip);
+                      window.location.href = `/tips/${slug}`;
+                    }}
+                  >
+                    {tip.is_featured && (
+                      <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white text-sm font-medium px-4 py-2 flex items-center gap-2">
+                        <Star className="w-4 h-4" />
+                        Featured Resource
+                      </div>
+                    )}
+                    
+                    <div className="p-8">
+                      {/* Category & Difficulty Badges */}
+                      <div className="flex gap-2 mb-4">
+                        <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+                          {tip.category}
+                        </span>
+                        <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
+                          {tip.difficulty}
+                        </span>
+                      </div>
+
+                      {/* Title & Description */}
+                      <h3 className="text-xl font-bold text-gray-900 mb-3">{tip.title}</h3>
+                      <p className="text-gray-600 mb-6">{tip.subtitle || tip.description.substring(0, 120)}...</p>
+
+                      {/* Tags */}
+                      {tip.tags && tip.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-6">
+                          {tip.tags.slice(0, 3).map((tag, index) => (
+                            <span key={index} className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">
+                              #{tag}
+                            </span>
+                          ))}
+                          {tip.tags.length > 3 && (
+                            <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">
+                              +{tip.tags.length - 3}
+                            </span>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Footer */}
+                      <div className="flex items-center justify-between pt-6 border-t">
+                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                          <Clock className="w-4 h-4" />
+                          <span>{Math.ceil(tip.description.length / 200)} min read</span>
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {(tip.view_count || 0).toLocaleString()} views
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
 
           {/* Show More Button */}
           <div className="text-center mt-12">

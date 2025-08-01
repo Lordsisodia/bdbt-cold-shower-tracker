@@ -15,35 +15,39 @@ export class PDFGenerator {
     this.doc = new jsPDF();
     this.pageHeight = this.doc.internal.pageSize.height;
     this.pageWidth = this.doc.internal.pageSize.width;
-    this.margin = 20;
+    this.margin = 24; // Increased for better breathing room
     this.currentY = this.margin;
-    this.lineHeight = 7;
+    this.lineHeight = 8; // Improved line spacing for readability
   }
 
   generateTipPDF(tip: Tip): Blob {
     this.doc = new jsPDF();
     this.currentY = this.margin;
 
-    // Header with colored background
-    this.drawHeader(tip);
+    // Draw improved header with title at top
+    this.drawImprovedHeader(tip);
 
-    // Title and subtitle
-    this.currentY = 80;
-    this.doc.setFontSize(24);
-    this.doc.setFont('helvetica', 'bold');
-    this.wrapText(tip.content.title, this.margin, this.currentY, this.pageWidth - 2 * this.margin);
+    // Description with modern typography and formatting
+    this.currentY += 8;
     
-    this.currentY += 15;
-    this.doc.setFontSize(14);
+    // Description section with improved readability
+    const descriptionAreaWidth = this.pageWidth - 2 * this.margin;
+    const optimalLineLength = Math.min(descriptionAreaWidth, 400); // Optimal reading line length
+    const descriptionX = this.margin + (descriptionAreaWidth - optimalLineLength) / 2;
+    
+    // Lead paragraph styling (modern approach)
+    this.doc.setFontSize(14); // Larger for lead paragraph
     this.doc.setFont('helvetica', 'normal');
-    this.doc.setTextColor(100);
-    this.wrapText(tip.content.subtitle, this.margin, this.currentY, this.pageWidth - 2 * this.margin);
+    this.doc.setTextColor(31, 41, 55); // High contrast for readability
     
-    // Description
-    this.currentY += 20;
-    this.doc.setTextColor(0);
-    this.doc.setFontSize(12);
-    this.wrapText(tip.content.description, this.margin, this.currentY, this.pageWidth - 2 * this.margin);
+    // Better line height for body text
+    const originalLineHeight = this.lineHeight;
+    this.lineHeight = 9; // Increased for better readability
+    
+    this.wrapText(tip.content.description, descriptionX, this.currentY, optimalLineLength);
+    
+    // Restore original line height
+    this.lineHeight = originalLineHeight;
 
     // Key Benefits section
     this.currentY += 25;
@@ -87,6 +91,121 @@ export class PDFGenerator {
     return this.doc.output('blob');
   }
 
+  private drawImprovedHeader(tip: Tip) {
+    // Modern 2025 design with sophisticated color palette
+    const colors = {
+      health: { 
+        primary: { r: 16, g: 185, b: 129 }, // Modern emerald
+        secondary: { r: 236, g: 253, b: 245 }, // Light emerald
+        accent: { r: 5, g: 150, b: 105 } // Darker emerald
+      },
+      wealth: { 
+        primary: { r: 245, g: 158, b: 11 }, // Modern amber
+        secondary: { r: 255, g: 251, b: 235 }, // Light amber
+        accent: { r: 217, g: 119, b: 6 } // Darker amber
+      },
+      happiness: { 
+        primary: { r: 139, g: 92, b: 246 }, // Modern violet
+        secondary: { r: 245, g: 243, b: 255 }, // Light violet
+        accent: { r: 124, g: 58, b: 237 } // Darker violet
+      }
+    };
+    
+    const colorScheme = colors[tip.category];
+    
+    // Calculate dynamic header using golden ratio principles
+    let headerHeight = 140;
+    const titleLength = tip.content.title.length;
+    const subtitleLength = tip.content.subtitle.length;
+    
+    // More sophisticated height calculation
+    if (titleLength > 50 || subtitleLength > 70) headerHeight = 160;
+    if (titleLength > 80 || subtitleLength > 100) headerHeight = 180;
+    if (titleLength > 120 || subtitleLength > 140) headerHeight = 200;
+    
+    // Modern gradient-like background effect (simulated with subtle tones)
+    this.doc.setFillColor(255, 255, 255);
+    this.doc.rect(0, 0, this.pageWidth, headerHeight, 'F');
+    
+    // Subtle background pattern using secondary color
+    this.doc.setFillColor(colorScheme.secondary.r, colorScheme.secondary.g, colorScheme.secondary.b);
+    this.doc.rect(0, 0, this.pageWidth, headerHeight, 'F');
+    
+    // Modern accent design - vertical stripe following golden ratio
+    const accentWidth = this.pageWidth * 0.618 * 0.01; // ~4px using golden ratio
+    this.doc.setFillColor(colorScheme.primary.r, colorScheme.primary.g, colorScheme.primary.b);
+    this.doc.rect(0, 0, accentWidth, headerHeight, 'F');
+    
+    // Brand section with improved typography hierarchy
+    this.doc.setTextColor(55, 65, 81); // Modern neutral gray
+    this.doc.setFontSize(12);
+    this.doc.setFont('helvetica', 'bold');
+    this.doc.text('BDBT', this.margin, 24);
+    
+    // Tagline with modern spacing
+    this.doc.setFontSize(8);
+    this.doc.setFont('helvetica', 'normal');
+    this.doc.setTextColor(107, 114, 128);
+    this.doc.text('BETTER DAYS, BETTER TOMORROW', this.margin, 32);
+    
+    // Title with sophisticated typography scale
+    this.currentY = 52;
+    this.doc.setTextColor(17, 24, 39); // Nearly black for high contrast
+    
+    // Typography scale based on modern design systems
+    let titleFontSize = 32; // Larger base size
+    if (titleLength > 40) titleFontSize = 28;
+    if (titleLength > 60) titleFontSize = 24;
+    if (titleLength > 90) titleFontSize = 22;
+    
+    this.doc.setFontSize(titleFontSize);
+    this.doc.setFont('helvetica', 'bold');
+    const titleLines = this.wrapTextWithReturn(tip.content.title, this.margin, this.currentY, this.pageWidth - 2 * this.margin);
+    
+    // Subtitle with improved spacing using modular scale
+    this.currentY += Math.max(titleLines * 10, 16);
+    this.doc.setFontSize(16);
+    this.doc.setFont('helvetica', 'normal');
+    this.doc.setTextColor(75, 85, 99); // Medium gray for hierarchy
+    const subtitleLines = this.wrapTextWithReturn(tip.content.subtitle, this.margin, this.currentY, this.pageWidth - 2 * this.margin);
+    
+    // Modern metadata design with card-like elements
+    const metaY = headerHeight - 36;
+    const cardHeight = 24;
+    const cardSpacing = 8;
+    
+    // Category card with modern shadow effect (simulated)
+    this.drawModernCard(this.margin, metaY, 80, cardHeight, colorScheme.primary, tip.category.toUpperCase());
+    
+    // Difficulty card
+    const difficultyColor = { r: 75, g: 85, b: 99 }; // Neutral
+    this.drawModernCard(this.margin + 88, metaY, 80, cardHeight, difficultyColor, tip.difficulty.toUpperCase());
+    
+    // Read time card
+    const timeColor = { r: 107, g: 114, b: 128 }; // Light neutral
+    this.drawModernCard(this.pageWidth - this.margin - 88, metaY, 88, cardHeight, timeColor, `${tip.content.readTime} MIN READ`);
+    
+    // Subtle separator line using golden ratio positioning
+    const lineY = headerHeight - 8;
+    this.doc.setDrawColor(229, 231, 235);
+    this.doc.setLineWidth(0.5);
+    this.doc.line(this.margin, lineY, this.pageWidth - this.margin, lineY);
+    
+    this.currentY = headerHeight + 16; // More generous spacing
+  }
+
+  private drawModernCard(x: number, y: number, width: number, height: number, color: {r: number, g: number, b: number}, text: string) {
+    // Card background with subtle shadow effect
+    this.doc.setFillColor(color.r, color.g, color.b);
+    this.doc.roundedRect(x, y, width, height, 6, 6, 'F');
+    
+    // Text with proper centering
+    this.doc.setTextColor(255, 255, 255);
+    this.doc.setFontSize(10);
+    this.doc.setFont('helvetica', 'bold');
+    this.doc.text(text, x + width/2, y + height/2 + 2, { align: 'center' });
+  }
+
   private drawHeader(tip: Tip) {
     const colors = {
       health: { r: 34, g: 197, b: 94 },
@@ -118,35 +237,145 @@ export class PDFGenerator {
   }
 
   private drawSection(title: string, items: string[]) {
-    // Check if we need a new page
-    if (this.currentY + (items.length * this.lineHeight) + 20 > this.pageHeight - this.margin) {
+    // More accurate space estimation using modern design principles
+    const estimatedLinesPerItem = 2.5;
+    const sectionPadding = 32; // Generous padding following modern design
+    const estimatedSpace = (items.length * estimatedLinesPerItem * this.lineHeight) + sectionPadding + 40;
+    
+    // Smart page break with better footer margin
+    if (this.currentY + estimatedSpace > this.pageHeight - 80) {
       this.doc.addPage();
-      this.currentY = this.margin;
+      this.currentY = this.margin + 8;
     }
 
-    this.doc.setFontSize(16);
-    this.doc.setFont('helvetica', 'bold');
-    this.doc.text(title, this.margin, this.currentY);
-    this.currentY += 10;
+    // Modern section header with sophisticated typography
+    this.currentY += 16; // Breathing room before section
     
-    this.doc.setFontSize(12);
-    this.doc.setFont('helvetica', 'normal');
-    items.forEach((item) => {
-      this.doc.text('• ', this.margin + 5, this.currentY);
-      this.wrapText(item, this.margin + 15, this.currentY, this.pageWidth - 2 * this.margin - 15);
-      this.currentY += 8;
+    // Section number/icon (visual hierarchy improvement)
+    this.doc.setFillColor(17, 24, 39);
+    this.doc.circle(this.margin + 6, this.currentY - 2, 2, 'F');
+    
+    // Section title with modern typography scale
+    this.doc.setFontSize(20); // Larger for better hierarchy
+    this.doc.setFont('helvetica', 'bold');
+    this.doc.setTextColor(17, 24, 39); // High contrast black
+    this.doc.text(title, this.margin + 16, this.currentY);
+    
+    // Modern underline using golden ratio proportions
+    const underlineWidth = Math.min(title.length * 8, this.pageWidth * 0.382); // Golden ratio
+    this.doc.setDrawColor(209, 213, 219);
+    this.doc.setLineWidth(1);
+    this.doc.line(this.margin + 16, this.currentY + 4, this.margin + 16 + underlineWidth, this.currentY + 4);
+    
+    this.currentY += 24; // Modern spacing
+    
+    // Content area with improved grid system
+    const contentAreaWidth = this.pageWidth - 2 * this.margin;
+    const itemIndent = 20; // Consistent indentation
+    
+    items.forEach((item, index) => {
+      // Intelligent page break detection
+      const estimatedItemLines = Math.ceil(item.length / 85);
+      const itemHeight = Math.max(16, estimatedItemLines * this.lineHeight + 8);
+      
+      if (this.currentY + itemHeight > this.pageHeight - 80) {
+        this.doc.addPage();
+        this.currentY = this.margin + 8;
+      }
+      
+      // Modern card-like design for each item
+      const cardPadding = 12;
+      const cardMargin = 4;
+      const cardHeight = Math.max(20, itemHeight + cardPadding);
+      
+      // Subtle card background with modern shadow simulation
+      if (index % 2 === 0) {
+        this.doc.setFillColor(249, 250, 251); // Very light neutral
+        this.doc.roundedRect(this.margin - cardMargin, this.currentY - cardPadding/2, contentAreaWidth + 2*cardMargin, cardHeight, 4, 4, 'F');
+      }
+      
+      // Modern bullet point design
+      const bulletX = this.margin + 12;
+      const bulletY = this.currentY + 2;
+      
+      // Gradient-like bullet (simulated with multiple circles)
+      this.doc.setFillColor(75, 85, 99);
+      this.doc.circle(bulletX, bulletY, 2.5, 'F');
+      this.doc.setFillColor(107, 114, 128);
+      this.doc.circle(bulletX, bulletY, 1.5, 'F');
+      
+      // Item text with improved typography
+      this.doc.setFontSize(12);
+      this.doc.setFont('helvetica', 'normal');
+      this.doc.setTextColor(55, 65, 81); // Modern neutral for readability
+      
+      const textStartY = this.currentY;
+      const linesUsed = this.wrapTextWithReturn(
+        item, 
+        this.margin + itemIndent, 
+        this.currentY, 
+        contentAreaWidth - itemIndent - 8
+      );
+      
+      // Consistent spacing using modular scale
+      const actualHeight = this.currentY - textStartY;
+      this.currentY = textStartY + Math.max(actualHeight, 16) + 8;
     });
+    
+    // Section separator with modern design
+    this.currentY += 16;
+    this.doc.setDrawColor(229, 231, 235);
+    this.doc.setLineWidth(0.5);
+    const separatorY = this.currentY;
+    this.doc.line(this.margin + 20, separatorY, this.pageWidth - this.margin - 20, separatorY);
+    
+    this.currentY += 16; // Generous spacing after section
   }
 
   private drawFooter(tip: Tip) {
-    const footerY = this.pageHeight - 20;
-    this.doc.setDrawColor(200);
-    this.doc.line(this.margin, footerY - 10, this.pageWidth - this.margin, footerY - 10);
+    const footerHeight = 32;
+    const footerY = this.pageHeight - footerHeight;
     
-    this.doc.setFontSize(10);
-    this.doc.setTextColor(100);
-    this.doc.text('BDBT - Better Days, Better Tomorrow', this.margin, footerY);
-    this.doc.text(`Tip #${tip.id}`, this.pageWidth - this.margin, footerY, { align: 'right' });
+    // Modern footer background with subtle gradient effect
+    this.doc.setFillColor(249, 250, 251);
+    this.doc.rect(0, footerY, this.pageWidth, footerHeight, 'F');
+    
+    // Elegant top border with modern styling
+    this.doc.setDrawColor(229, 231, 235);
+    this.doc.setLineWidth(1);
+    this.doc.line(0, footerY, this.pageWidth, footerY);
+    
+    // Brand section with improved hierarchy
+    this.doc.setFontSize(11);
+    this.doc.setTextColor(17, 24, 39);
+    this.doc.setFont('helvetica', 'bold');
+    this.doc.text('BDBT', this.margin, footerY + 14);
+    
+    this.doc.setFontSize(8);
+    this.doc.setFont('helvetica', 'normal');
+    this.doc.setTextColor(107, 114, 128);
+    this.doc.text('Better Days, Better Tomorrow', this.margin, footerY + 22);
+    
+    // Center - Website with modern styling
+    this.doc.setFontSize(9);
+    this.doc.setFont('helvetica', 'normal');
+    this.doc.setTextColor(75, 85, 99);
+    this.doc.text('www.bdbt.com', this.pageWidth / 2, footerY + 18, { align: 'center' });
+    
+    // Right side - Tip info with modern card design
+    const tipCardWidth = 60;
+    const tipCardHeight = 20;
+    const tipCardX = this.pageWidth - this.margin - tipCardWidth;
+    const tipCardY = footerY + 6;
+    
+    // Tip number card
+    this.doc.setFillColor(55, 65, 81);
+    this.doc.roundedRect(tipCardX, tipCardY, tipCardWidth, tipCardHeight, 4, 4, 'F');
+    
+    this.doc.setTextColor(255, 255, 255);
+    this.doc.setFontSize(9);
+    this.doc.setFont('helvetica', 'bold');
+    this.doc.text(`TIP #${tip.id}`, tipCardX + tipCardWidth/2, tipCardY + tipCardHeight/2 + 2, { align: 'center' });
   }
 
   private drawCatalogueCover() {
@@ -244,6 +473,18 @@ export class PDFGenerator {
     return linesToShow.length;
   }
 
+  private wrapTextWithReturn(text: string, x: number, y: number, maxWidth: number, maxLines?: number): number {
+    const lines = this.doc.splitTextToSize(text, maxWidth);
+    const linesToShow = maxLines ? lines.slice(0, maxLines) : lines;
+    
+    linesToShow.forEach((line: string, i: number) => {
+      this.doc.text(line, x, y + (i * this.lineHeight));
+    });
+    
+    this.currentY = y + (linesToShow.length * this.lineHeight);
+    return linesToShow.length;
+  }
+
   // Enhanced PDF generation with Grok content
   generateEnhancedTipPDF(tip: DatabaseTip, enhanced?: GrokEnhancedTip | null): Blob {
     this.doc = new jsPDF();
@@ -251,7 +492,7 @@ export class PDFGenerator {
 
     // Convert DatabaseTip to Tip format
     const tipData: Tip = {
-      id: tip.id || 0,
+      id: (tip.id || 0).toString(),
       category: tip.category as 'health' | 'wealth' | 'happiness',
       difficulty: tip.difficulty as 'Easy' | 'Moderate' | 'Advanced',
       content: {
@@ -263,36 +504,24 @@ export class PDFGenerator {
           secondary: tip.secondary_benefit,
           tertiary: tip.tertiary_benefit
         },
-        implementation: {
-          time: tip.implementation_time,
-          frequency: tip.frequency,
-          cost: tip.cost
-        },
         whatsIncluded: enhanced?.enhancedContent.implementationSteps || [],
-        readTime: 5,
-        tags: tip.tags
-      }
+        readTime: 5
+      },
+      tags: tip.tags || [],
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      viewCount: 0,
+      downloadCount: 0
     };
 
-    // Generate standard PDF with enhanced content
-    this.drawHeader(tipData);
-    this.currentY = 80;
-    
-    // Title and subtitle
-    this.doc.setFontSize(24);
-    this.doc.setFont('helvetica', 'bold');
-    this.wrapText(tipData.content.title, this.margin, this.currentY, this.pageWidth - 2 * this.margin);
-    
-    this.currentY += 15;
-    this.doc.setFontSize(14);
-    this.doc.setFont('helvetica', 'normal');
-    this.doc.setTextColor(100);
-    this.wrapText(tipData.content.subtitle, this.margin, this.currentY, this.pageWidth - 2 * this.margin);
+    // Generate enhanced PDF with improved header
+    this.drawImprovedHeader(tipData);
     
     // Enhanced description
-    this.currentY += 20;
-    this.doc.setTextColor(0);
+    this.currentY += 25;
+    this.doc.setTextColor(60, 60, 60);
     this.doc.setFontSize(12);
+    this.doc.setFont('helvetica', 'normal');
     this.wrapText(tipData.content.description, this.margin, this.currentY, this.pageWidth - 2 * this.margin);
 
     // Enhanced benefits section

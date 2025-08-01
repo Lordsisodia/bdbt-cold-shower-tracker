@@ -1,0 +1,16 @@
+{
+  "name": "notion-mcp-server",
+  "version": "1.0.0",
+  "description": "Custom Notion MCP Server",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "setup": "node setup-claude.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "@notionhq/client": "^2.2.15",
+    "dotenv": "^16.4.5"
+  }
+}

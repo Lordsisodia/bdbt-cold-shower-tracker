@@ -1,0 +1,79 @@
+{
+  "project_name": "BDBT Autonomous System",
+  "version": "1.0.0",
+  "automation_targets": {
+    "daily_tips": 100,
+    "quality_threshold": 0.8,
+    "batch_size": 25
+  },
+  "schedules": {
+    "tip_generation": {
+      "frequency": "daily",
+      "time": "09:00",
+      "enabled": true
+    },
+    "quality_audit": {
+      "frequency": "twice_daily",
+      "times": ["10:00", "16:00"],
+      "enabled": true
+    },
+    "pdf_generation": {
+      "frequency": "daily",
+      "time": "18:00",
+      "enabled": true
+    },
+    "system_maintenance": {
+      "frequency": "every_2_hours",
+      "enabled": true
+    }
+  },
+  "teams": {
+    "frontend": {
+      "project_manager": {
+        "window_name": "Frontend-PM",
+        "responsibilities": ["UI/UX oversight", "Component quality", "Performance monitoring"]
+      },
+      "developers": [
+        {
+          "window_name": "Frontend-Dev-1",
+          "focus": ["React components", "State management", "API integration"]
+        }
+      ]
+    },
+    "backend": {
+      "project_manager": {
+        "window_name": "Backend-PM",
+        "responsibilities": ["API design", "Database optimization", "Service reliability"]
+      },
+      "developers": [
+        {
+          "window_name": "Backend-Dev-1",
+          "focus": ["Supabase functions", "Grok integration", "Export services"]
+        }
+      ]
+    },
+    "content": {
+      "project_manager": {
+        "window_name": "Content-PM",
+        "responsibilities": ["Tip quality", "Category management", "Export workflows"]
+      },
+      "developers": [
+        {
+          "window_name": "Content-Dev-1",
+          "focus": ["Tip generation", "PDF creation", "Batch processing"]
+        }
+      ]
+    }
+  },
+  "quality_standards": {
+    "code_review": true,
+    "test_coverage_minimum": 80,
+    "typescript_strict": true,
+    "commit_frequency": "30_minutes"
+  },
+  "communication": {
+    "status_updates": "15_minutes",
+    "escalation_timeout": "10_minutes",
+    "log_directory": "/tmp/bdbt_logs"
+  }
+}

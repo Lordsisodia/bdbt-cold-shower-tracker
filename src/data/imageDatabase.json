@@ -1,0 +1,277 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2024-01-20",
+  "categories": {
+    "health": {
+      "hero": [
+        {
+          "id": "health-hero-1",
+          "url": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=200&fit=crop&q=80",
+          "alt": "Person doing morning yoga in sunlight",
+          "tags": ["yoga", "wellness", "morning", "fitness"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        },
+        {
+          "id": "health-hero-2", 
+          "url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=200&fit=crop&q=80",
+          "alt": "Fresh healthy breakfast bowl with fruits",
+          "tags": ["nutrition", "healthy eating", "breakfast", "fruits"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        },
+        {
+          "id": "health-hero-3",
+          "url": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=600&fit=crop&q=80", 
+          "thumbnailUrl": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=300&h=200&fit=crop&q=80",
+          "alt": "Peaceful meditation in nature",
+          "tags": ["meditation", "mindfulness", "nature", "peace"],
+          "source": "unsplash", 
+          "credit": "Unsplash"
+        },
+        {
+          "id": "health-hero-4",
+          "url": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=300&h=200&fit=crop&q=80", 
+          "alt": "Running exercise at sunrise",
+          "tags": ["running", "exercise", "sunrise", "fitness"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        },
+        {
+          "id": "health-hero-5",
+          "url": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=300&h=200&fit=crop&q=80",
+          "alt": "Mental health self-care moment",
+          "tags": ["mental health", "self-care", "wellness", "relaxation"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        }
+      ],
+      "benefits": [
+        {
+          "id": "health-benefits-1",
+          "url": "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=600&h=400&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=300&h=200&fit=crop&q=80",
+          "alt": "Health improvement progress chart",
+          "tags": ["progress", "improvement", "health metrics"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        },
+        {
+          "id": "health-benefits-2",
+          "url": "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=200&fit=crop&q=80",
+          "alt": "Energetic person feeling great",
+          "tags": ["energy", "vitality", "wellness", "happiness"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        }
+      ],
+      "implementation": [
+        {
+          "id": "health-impl-1",
+          "url": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&h=400&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=200&fit=crop&q=80",
+          "alt": "Health planning and goal setting",
+          "tags": ["planning", "goals", "health plan", "steps"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        }
+      ],
+      "cta": [
+        {
+          "id": "health-cta-1", 
+          "url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=300&h=200&fit=crop&q=80",
+          "alt": "Start your health journey today",
+          "tags": ["start", "journey", "health", "motivation"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        }
+      ]
+    },
+    "wealth": {
+      "hero": [
+        {
+          "id": "wealth-hero-1",
+          "url": "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=300&h=200&fit=crop&q=80",
+          "alt": "Business growth and success",
+          "tags": ["business", "growth", "success", "professional"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        },
+        {
+          "id": "wealth-hero-2",
+          "url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=300&h=200&fit=crop&q=80",
+          "alt": "Investment and financial planning",
+          "tags": ["investment", "finance", "planning", "money"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        },
+        {
+          "id": "wealth-hero-3", 
+          "url": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=300&h=200&fit=crop&q=80",
+          "alt": "Professional workspace and productivity",
+          "tags": ["productivity", "workspace", "professional", "success"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        },
+        {
+          "id": "wealth-hero-4",
+          "url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&q=80",
+          "alt": "Financial success and achievement",
+          "tags": ["achievement", "success", "wealth", "financial freedom"],
+          "source": "unsplash", 
+          "credit": "Unsplash"
+        },
+        {
+          "id": "wealth-hero-5",
+          "url": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=300&h=200&fit=crop&q=80",
+          "alt": "Entrepreneurship and business building",
+          "tags": ["entrepreneurship", "business", "startup", "innovation"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        }
+      ],
+      "benefits": [
+        {
+          "id": "wealth-benefits-1",
+          "url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=300&h=200&fit=crop&q=80",
+          "alt": "Financial growth and prosperity",
+          "tags": ["growth", "prosperity", "financial success"],
+          "source": "unsplash",
+          "credit": "Unsplash"  
+        }
+      ],
+      "implementation": [
+        {
+          "id": "wealth-impl-1",
+          "url": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&h=400&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=300&h=200&fit=crop&q=80",
+          "alt": "Wealth building strategy and planning",
+          "tags": ["strategy", "planning", "wealth building"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        }
+      ],
+      "cta": [
+        {
+          "id": "wealth-cta-1",
+          "url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=200&fit=crop&q=80",
+          "alt": "Start building wealth today",
+          "tags": ["start", "wealth building", "financial freedom"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        }
+      ]
+    },
+    "happiness": {
+      "hero": [
+        {
+          "id": "happiness-hero-1",
+          "url": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&h=200&fit=crop&q=80",
+   
+
+       "alt": "Joyful person expressing happiness",
+          "tags": ["joy", "happiness", "positive emotions", "wellbeing"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        },
+        {
+          "id": "happiness-hero-2",
+          "url": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=300&h=200&fit=crop&q=80",
+          "alt": "Friends enjoying life together",
+          "tags": ["friendship", "relationships", "social connection", "joy"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        },
+        {
+          "id": "happiness-hero-3",
+          "url": "https://images.unsplash.com/photo-1515632501407-ea3b31bf6c59?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1515632501407-ea3b31bf6c59?w=300&h=200&fit=crop&q=80",
+          "alt": "Gratitude and mindful living",
+          "tags": ["gratitude", "mindfulness", "contentment", "peace"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        },
+        {
+          "id": "happiness-hero-4",
+          "url": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=200&fit=crop&q=80",
+          "alt": "Inner peace and life balance",
+          "tags": ["balance", "inner peace", "harmony", "wellness"],
+          "source": "unsplash", 
+          "credit": "Unsplash"
+        },
+        {
+          "id": "happiness-hero-5",
+          "url": "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=300&h=200&fit=crop&q=80",
+          "alt": "Positive mindset and personal growth",
+          "tags": ["personal growth", "positive mindset", "self-improvement"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        }
+      ],
+      "benefits": [
+        {
+          "id": "happiness-benefits-1",
+          "url": "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=600&h=400&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=300&h=200&fit=crop&q=80",
+          "alt": "Emotional wellbeing and happiness benefits",
+          "tags": ["emotional wellbeing", "happiness benefits", "positive outcomes"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        }
+      ],
+      "implementation": [
+        {
+          "id": "happiness-impl-1",  
+          "url": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&h=400&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=200&fit=crop&q=80",
+          "alt": "Happiness practices and daily routines",
+          "tags": ["daily practices", "happiness routines", "implementation"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        }
+      ],
+      "cta": [
+        {
+          "id": "happiness-cta-1",
+          "url": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&h=600&fit=crop&q=80",
+          "thumbnailUrl": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=300&h=200&fit=crop&q=80",
+          "alt": "Begin your happiness journey",
+          "tags": ["start", "happiness journey", "wellbeing", "positive change"],
+          "source": "unsplash",
+          "credit": "Unsplash"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "totalImages": 24,
+    "categoryCounts": {
+      "health": 9,
+      "wealth": 8, 
+      "happiness": 9
+    },
+    "contextCounts": {
+      "hero": 15,
+      "benefits": 3,
+      "implementation": 3,
+      "cta": 3
+    }
+  }
+}

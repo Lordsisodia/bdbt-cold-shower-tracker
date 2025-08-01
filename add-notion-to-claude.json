@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "notion-custom": {
+      "command": "node",
+      "args": ["/Users/shaansisodia/Desktop/Cursor/SIDE-QUEST-CLIENTS/bdbt/notion-mcp-server/server.js"],
+      "env": {
+        "NOTION_API_KEY": "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"
+      }
+    }
+  }
+}

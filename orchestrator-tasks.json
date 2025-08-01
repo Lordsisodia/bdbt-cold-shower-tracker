@@ -1,0 +1,224 @@
+{
+  "project_goals": {
+    "primary": "Build a complete SaaS platform for business tips with user portal and admin dashboard",
+    "targets": {
+      "daily_tips": 100,
+      "platform_launch": "2 weeks",
+      "user_capacity": 10000
+    }
+  },
+  "master_task_list": {
+    "phase_1_foundation": {
+      "duration": "2 days",
+      "tasks": [
+        {
+          "id": "F1",
+          "title": "Set up Supabase authentication",
+          "team": "backend",
+          "priority": "critical",
+          "subtasks": [
+            "Configure Supabase Auth",
+            "Create user tables with RLS",
+            "Implement JWT handling",
+            "Create auth API endpoints"
+          ]
+        },
+        {
+          "id": "F2",
+          "title": "Create base UI components",
+          "team": "frontend",
+          "priority": "critical",
+          "subtasks": [
+            "Set up routing structure",
+            "Create layout components",
+            "Implement auth forms",
+            "Add loading states"
+          ]
+        },
+        {
+          "id": "F3",
+          "title": "Database schema implementation",
+          "team": "backend",
+          "priority": "critical",
+          "subtasks": [
+            "Create all tables via migrations",
+            "Set up RLS policies",
+            "Create indexes for performance",
+            "Seed test data"
+          ]
+        }
+      ]
+    },
+    "phase_2_user_platform": {
+      "duration": "3 days",
+      "tasks": [
+        {
+          "id": "U1",
+          "title": "User dashboard implementation",
+          "team": "frontend",
+          "priority": "high",
+          "subtasks": [
+            "Create dashboard layout",
+            "Implement tip browsing",
+            "Add search and filters",
+            "Create tip detail views"
+          ]
+        },
+        {
+          "id": "U2",
+          "title": "User activity tracking",
+          "team": "backend",
+          "priority": "high",
+          "subtasks": [
+            "Create activity logging system",
+            "Implement view/download tracking",
+            "Create analytics aggregation",
+            "Set up real-time subscriptions"
+          ]
+        },
+        {
+          "id": "U3",
+          "title": "Collections feature",
+          "team": "fullstack",
+          "priority": "medium",
+          "subtasks": [
+            "Create collections UI",
+            "Implement CRUD operations",
+            "Add sharing functionality",
+            "Create export features"
+          ]
+        }
+      ]
+    },
+    "phase_3_admin_dashboard": {
+      "duration": "3 days",
+      "tasks": [
+        {
+          "id": "A1",
+          "title": "Admin authentication & layout",
+          "team": "frontend",
+          "priority": "high",
+          "subtasks": [
+            "Create admin route guards",
+            "Design admin layout",
+            "Implement navigation",
+            "Add role-based access"
+          ]
+        },
+        {
+          "id": "A2",
+          "title": "User management interface",
+          "team": "fullstack",
+          "priority": "high",
+          "subtasks": [
+            "Create user list with filters",
+            "User detail views",
+            "Usage statistics per user",
+            "Subscription management UI"
+          ]
+        },
+        {
+          "id": "A3",
+          "title": "Analytics dashboard",
+          "team": "fullstack",
+          "priority": "high",
+          "subtasks": [
+            "Implement chart components",
+            "Create data aggregation queries",
+            "Build real-time metrics",
+            "Add export capabilities"
+          ]
+        },
+        {
+          "id": "A4",
+          "title": "Content management system",
+          "team": "fullstack",
+          "priority": "medium",
+          "subtasks": [
+            "Tip management interface",
+            "Bulk operations",
+            "Quality scoring UI",
+            "Publishing workflow"
+          ]
+        }
+      ]
+    },
+    "phase_4_automation": {
+      "duration": "2 days",
+      "tasks": [
+        {
+          "id": "AU1",
+          "title": "Automated tip generation pipeline",
+          "team": "backend",
+          "priority": "high",
+          "subtasks": [
+            "Schedule daily generation",
+            "Implement quality checks",
+            "Auto-categorization",
+            "Error handling and retries"
+          ]
+        },
+        {
+          "id": "AU2",
+          "title": "Email campaign system",
+          "team": "backend",
+          "priority": "medium",
+          "subtasks": [
+            "Email template system",
+            "Campaign scheduler",
+            "Tracking implementation",
+            "Unsubscribe handling"
+          ]
+        }
+      ]
+    },
+    "continuous_tasks": {
+      "git_automation": {
+        "frequency": "every_15_minutes",
+        "tasks": [
+          "git add -A",
+          "git commit -m 'Auto-commit: [timestamp] - [current_task]'",
+          "git push origin main"
+        ]
+      },
+      "mcp_verification": {
+        "frequency": "every_30_minutes",
+        "tasks": [
+          "Verify Supabase MCP connection",
+          "Test GitHub CLI access",
+          "Check file system permissions",
+          "Auto-fix any MCP issues"
+        ]
+      },
+      "progress_tracking": {
+        "frequency": "every_15_minutes",
+        "tasks": [
+          "Update task completion status",
+          "Log blockers and issues",
+          "Report to orchestrator",
+          "Adjust priorities if needed"
+        ]
+      }
+    }
+  },
+  "team_assignments": {
+    "frontend": {
+      "current_sprint": ["F2", "U1", "A1"],
+      "next_sprint": ["U3", "A3"]
+    },
+    "backend": {
+      "current_sprint": ["F1", "F3", "U2"],
+      "next_sprint": ["AU1", "AU2"]
+    },
+    "fullstack": {
+      "current_sprint": ["A2", "A4"],
+      "next_sprint": ["U3", "A3"]
+    }
+  },
+  "success_criteria": {
+    "phase_1": "Users can register and log in",
+    "phase_2": "Users can browse, search, and save tips",
+    "phase_3": "Admins can manage users and content",
+    "phase_4": "System runs autonomously with minimal intervention"
+  }
+}

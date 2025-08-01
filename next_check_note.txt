@@ -1,0 +1,4 @@
+=== Next Check Note (Fri Aug  1 18:26:36 BST 2025) ===
+Scheduled for: 15 minutes
+
+15-minute team check-in: Review progress, handle blockers, ensure commits

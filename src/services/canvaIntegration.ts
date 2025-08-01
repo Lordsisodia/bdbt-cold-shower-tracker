@@ -1,5 +1,6 @@
 // Canva API Integration for BDBT Tips
-// Note: Canva Connect API requires approval and partnership
+// Enhanced with OAuth 2.0 flow and Content Autofill API
+// Note: Requires Canva Partner Program approval for production use
 
 export interface CanvaDesignData {
   tipId: number;
@@ -22,13 +23,21 @@ export interface CanvaDesignData {
 }
 
 export class CanvaIntegrationService {
-  private apiKey: string;
-  private brandId: string;
+  private clientId: string;
+  private clientSecret: string;
+  private redirectUri: string;
+  private accessToken: string | null = null;
+  private baseUrl = 'https://api.canva.com/rest/v1';
   private templateIds: Map<string, string>;
 
   constructor() {
-    this.apiKey = process.env.REACT_APP_CANVA_API_KEY || '';
-    this.brandId = process.env.REACT_APP_CANVA_BRAND_ID || '';
+    this.clientId = import.meta.env.VITE_CANVA_CLIENT_ID || '';
+    // SECURITY: Client secrets should NEVER be in client-side code
+    this.clientSecret = ''; // Moved to server-side for security
+    this.redirectUri = import.meta.env.VITE_CANVA_REDIRECT_URI || 'http://localhost:3000/auth/canva/callback';
+    
+    // Load stored access token
+    this.accessToken = localStorage.getItem('canva_access_token');
     
     // Map of template IDs for different tip types
     this.templateIds = new Map([
@@ -43,6 +52,70 @@ export class CanvaIntegrationService {
       ['happiness-advanced', 'DAFyGhIjKlU'],
       ['default', 'DAFyGhIjKlV']
     ]);
+  }
+
+  /**
+   * STEP 1: Get OAuth Authorization URL
+   */
+  getAuthorizationUrl(): string {
+    const scopes = [
+      'design:content:read',
+      'design:content:write',
+      'asset:read',
+      'folder:read'
+    ].join(' ');
+
+    const params = new URLSearchParams({
+      client_id: this.clientId,
+      response_type: 'code',
+      scope: scopes,
+      redirect_uri: this.redirectUri,
+      state: this.generateState()
+    });
+
+    return `https://www.canva.com/api/oauth/authorize?${params.toString()}`;
+  }
+
+  /**
+   * STEP 2: Exchange code for access token
+   */
+  async exchangeCodeForToken(code: string): Promise<string> {
+    try {
+      const response = await fetch('https://api.canva.com/rest/v1/oauth/token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          grant_type: 'authorization_code',
+          client_id: this.clientId,
+          client_secret: this.clientSecret,
+          code: code,
+          redirect_uri: this.redirectUri
+        })
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error_description || 'Token exchange failed');
+      }
+
+      this.accessToken = data.access_token;
+      localStorage.setItem('canva_access_token', this.accessToken);
+      
+      return this.accessToken;
+    } catch (error) {
+      console.error('Failed to exchange code for token:', error);
+      throw new Error('Canva authentication failed');
+    }
+  }
+
+  /**
+   * Check if user is authenticated
+   */
+  isAuthenticated(): boolean {
+    return !!this.accessToken;
   }
 
   // Create a design from tip data
@@ -194,6 +267,12 @@ export class CanvaIntegrationService {
   // Helper function for delays
   private delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // Generate secure state parameter
+  private generateState(): string {
+    return Math.random().toString(36).substring(2, 15) + 
+           Math.random().toString(36).substring(2, 15);
   }
 
   // Get design status

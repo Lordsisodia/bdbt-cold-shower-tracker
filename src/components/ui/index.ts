@@ -9,3 +9,14 @@ export { CustomToaster, showToast } from './Toast';
 export { AnimatedBackground } from './AnimatedBackground';
 export { Input } from './Input';
 export { Badge } from './Badge';
+
+// Dynamic components for better performance
+export {
+  DynamicMotionDiv,
+  DynamicMotionButton,
+  DynamicBarChart,
+  DynamicLineChart,
+  DynamicPDFViewer,
+  DynamicCalendar,
+  DynamicComponent
+} from './DynamicComponentLoader';

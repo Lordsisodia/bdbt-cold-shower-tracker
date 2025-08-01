@@ -1,0 +1,12 @@
+{
+  "bdbt-supabase": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "@modelcontextprotocol/server-supabase@latest"
+    ],
+    "env": {
+      "SUPABASE_MANAGEMENT_API_KEY": "sbp_ba244b5a217fde0b9b8320943afb9a19507db451"
+    }
+  }
+}

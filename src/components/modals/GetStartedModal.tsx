@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, ArrowRight, CheckCircle, Star, Users, Trophy, Target, Loader } from 'lucide-react';
-import { submitGetStarted, validateEmail, showErrorToast } from '../../utils/formUtils';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface GetStartedModalProps {
   isOpen: boolean;
@@ -10,8 +10,10 @@ interface GetStartedModalProps {
 type Step = 'welcome' | 'goals' | 'experience' | 'signup' | 'success';
 
 const GetStartedModal: React.FC<GetStartedModalProps> = ({ isOpen, onClose }) => {
+  const { signUp, validateEmail } = useAuth();
   const [currentStep, setCurrentStep] = useState<Step>('welcome');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     goals: [] as string[],
     experience: '',
@@ -56,28 +58,48 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({ isOpen, onClose }) =>
       case 'signup':
         // Validate form data
         if (!formData.email || !validateEmail(formData.email)) {
-          showErrorToast('Please enter a valid email address');
+          setError('Please enter a valid email address');
           return;
         }
         if (!formData.name.trim()) {
-          showErrorToast('Please enter your name');
+          setError('Please enter your name');
           return;
         }
         if (!formData.agreeToTerms) {
-          showErrorToast('Please agree to the terms and conditions');
+          setError('Please agree to the terms and conditions');
           return;
         }
 
         setIsSubmitting(true);
+        setError('');
+        
         try {
-          const success = await submitGetStarted(formData);
-          if (success) {
-            setCurrentStep('success');
+          // Generate a temporary password (user will reset it via email)
+          const tempPassword = Math.random().toString(36).slice(-12) + 'A1!';
+          
+          const { error: signUpError } = await signUp({
+            email: formData.email,
+            password: tempPassword,
+            fullName: formData.name,
+            metadata: {
+              goals: formData.goals,
+              experience: formData.experience,
+              onboarding_completed: true,
+              signup_source: 'get_started_modal'
+            }
+          });
+
+          if (signUpError) {
+            if (signUpError.message.includes('User already registered')) {
+              setError('An account with this email already exists. Try signing in instead.');
+            } else {
+              setError(signUpError.message || 'Failed to create account. Please try again.');
+            }
           } else {
-            showErrorToast('Something went wrong. Please try again.');
+            setCurrentStep('success');
           }
-        } catch (error) {
-          showErrorToast('Failed to create account. Please try again.');
+        } catch (error: any) {
+          setError('Failed to create account. Please try again.');
         } finally {
           setIsSubmitting(false);
         }
@@ -164,6 +186,13 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({ isOpen, onClose }) =>
 
           {/* Content */}
           <div className="px-8 py-8 min-h-[400px]">
+            {/* Error message */}
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
+                <div className="w-5 h-5 text-red-600 flex-shrink-0">⚠️</div>
+                <p className="text-sm text-red-600">{error}</p>
+              </div>
+            )}
             {/* Welcome Step */}
             {currentStep === 'welcome' && (
               <div className="text-center space-y-6">
@@ -327,8 +356,7 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({ isOpen, onClose }) =>
                     You're all set, {formData.name}!
                   </h3>
                   <p className="text-gray-600 max-w-md mx-auto">
-                    Welcome to the BDBT community! Check your email for your welcome package 
-                    including your first action steps.
+                    Your account has been created! Check your email to verify your account and set up your password.
                   </p>
                 </div>
                 <div className="bg-blue-50 rounded-2xl p-6 text-left">
@@ -336,15 +364,15 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({ isOpen, onClose }) =>
                   <ul className="space-y-2 text-sm text-gray-600">
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-green-500" />
-                      Check your email for your welcome package
+                      Check your email for the verification link
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-green-500" />
-                      Access your personalized resource recommendations
+                      Click the link to verify your account
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-green-500" />
-                      Join our community and start sharing your wins
+                      Set up your password and start using BDBT
                     </li>
                   </ul>
                 </div>
@@ -390,13 +418,21 @@ const GetStartedModal: React.FC<GetStartedModalProps> = ({ isOpen, onClose }) =>
             )}
 
             {currentStep === 'success' && (
-              <button
-                onClick={onClose}
-                className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-medium hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105"
-              >
-                Start Exploring
-                <ArrowRight className="w-4 h-4" />
-              </button>
+              <div className="flex gap-3">
+                <button
+                  onClick={onClose}
+                  className="flex items-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-full font-medium hover:bg-gray-200 transition-all"
+                >
+                  Explore Website
+                </button>
+                <button
+                  onClick={() => window.location.href = '/admin/dashboard'}
+                  className="flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-medium hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105"
+                >
+                  Access Admin Panel
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
             )}
           </div>
         </div>
