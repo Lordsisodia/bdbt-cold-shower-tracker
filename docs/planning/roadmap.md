@@ -24,7 +24,7 @@
 - Email campaign system
 
 ## Adaptive Tasks
-- AT1: Create tests for database migrations (activity tracking, collections) and App.tsx
+- AT1: Create tests for BasicColdShowerTracker component and database migrations
 - AD1: Document new components and APIs
 - AO1: Bundle size and performance optimization
 
