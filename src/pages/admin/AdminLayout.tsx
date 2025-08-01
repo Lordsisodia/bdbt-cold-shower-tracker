@@ -1,7 +1,7 @@
 import { BarChart3, FileText, LayoutDashboard, LogOut, Settings, Shield, Users, Zap } from 'lucide-react';
 import React from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/auth/useAuth';
 
 export const AdminLayout: React.FC = () => {
   const { signOut } = useAuth();

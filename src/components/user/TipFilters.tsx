@@ -36,7 +36,7 @@ export const TipFilters: React.FC<TipFiltersProps> = ({
   return (
     <div className="bg-white rounded-lg shadow-sm p-4">
       <button
-        onClick={() => setIsOpen(\!isOpen)}
+        onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 text-sm font-medium"
       >
         <Filter className="w-4 h-4" />
@@ -58,7 +58,7 @@ export const TipFilters: React.FC<TipFiltersProps> = ({
                       if (e.target.checked) {
                         updateFilters({ categories: [...filters.categories, category] });
                       } else {
-                        updateFilters({ categories: filters.categories.filter(c => c \!== category) });
+                        updateFilters({ categories: filters.categories.filter(c => c !== category) });
                       }
                     }}
                     className="rounded text-blue-600"

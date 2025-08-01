@@ -21,7 +21,7 @@ export const TipDetailModal: React.FC<TipDetailModalProps> = ({
   onBookmark,
   onShare
 }) => {
-  if (\!tip) return null;
+  if (!tip) return null;
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
