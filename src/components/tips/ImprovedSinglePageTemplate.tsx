@@ -1,10 +1,6 @@
 import React from 'react';
-import { 
-  FaHeart, FaBrain, FaDumbbell, FaChartLine, FaRocket, FaTrophy,
-  FaCheckCircle, FaLightbulb, FaCalendarCheck, FaClock, FaDollarSign,
-  FaStar, FaUserCheck, FaHandHoldingHeart, FaMedal, FaFire
-} from 'react-icons/fa';
 import { BiTimer, BiTrendingUp } from 'react-icons/bi';
+import { FaCalendarCheck, FaCheckCircle, FaDollarSign, FaFire, FaHeart, FaLightbulb, FaRocket, FaStar, FaTrophy, FaUserCheck } from 'react-icons/fa';
 import { MdAutoGraph } from 'react-icons/md';
 
 interface SinglePageTemplateProps {

@@ -1,5 +1,5 @@
+import { CheckCircle, ChevronDown, ChevronUp, Clock, DollarSign, Star, TrendingUp, Users } from 'lucide-react';
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, Play, CheckCircle, Star, TrendingUp, Users, Clock, DollarSign } from 'lucide-react';
 
 interface MockTip {
   id: number;

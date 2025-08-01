@@ -1,5 +1,5 @@
+import { CheckCircle, Download, Gift, Mail, Shield, X } from 'lucide-react';
 import React, { useState } from 'react';
-import { X, Download, Mail, Gift, Shield, CheckCircle } from 'lucide-react';
 import { newsletterService } from '../../services/newsletterService';
 
 interface EmailCaptureModalProps {

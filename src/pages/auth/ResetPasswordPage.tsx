@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { AlertCircle, ArrowLeft, Check, CheckCircle, Eye, EyeOff, Lock, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Lock, Eye, EyeOff, ArrowLeft, AlertCircle, CheckCircle, Check, X } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
 import { Button, Card, LoadingSpinner } from '../../components/ui';
+import { useAuth } from '../../contexts/AuthContext';
 
 const ResetPasswordPage: React.FC = () => {
   const navigate = useNavigate();

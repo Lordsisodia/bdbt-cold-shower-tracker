@@ -1,5 +1,4 @@
 import { DatabaseTip } from './tipsDatabaseService';
-import { GrokEnhancedTip } from './grokApiService';
 
 // Simple tip expansion interface
 export interface SimpleToFullTipExpansion {

@@ -1,6 +1,6 @@
+import { ArrowLeft, Briefcase, Clock, Coffee, DollarSign, GraduationCap, Heart, Laptop, MapPin, Send, Star, Target, Users, Zap } from 'lucide-react';
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { ArrowLeft, Users, Heart, Target, Zap, MapPin, Clock, DollarSign, Send, Star, Briefcase, GraduationCap, Coffee, Laptop } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const CareersPage: React.FC = () => {

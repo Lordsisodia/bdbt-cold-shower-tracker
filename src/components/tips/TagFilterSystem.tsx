@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { DatabaseTip, tipsDatabaseService } from '../../services/tipsDatabaseService';
-import { searchService, SearchResult, SearchFilters } from '../../services/searchService';
+import { Clock, Filter, Hash, Search, Settings, Star, X, Zap } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { SearchFilters, SearchResult, searchService } from '../../services/searchService';
+import { DatabaseTip } from '../../services/tipsDatabaseService';
 import AdvancedSearchModal from '../search/AdvancedSearchModal';
-import { X, Search, Filter, Hash, Clock, Star, Settings, Zap } from 'lucide-react';
 
 interface TagFilterSystemProps {
   tips: DatabaseTip[];

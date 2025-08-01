@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
-import Navigation from '../components/landing/Navigation';
 import Footer from '../components/landing/Footer';
+import Navigation from '../components/landing/Navigation';
 // PdfTemplatePreview component removed - using CustomPDFGenerator instead
-import { ChevronLeft, ChevronRight, Download, Eye, Palette, Layout, Package, FileText } from 'lucide-react';
-import ExportDownloadModal from '../components/tips/ExportDownloadModal';
+import { ChevronLeft, ChevronRight, Download, Eye, FileText, Layout, Package, Palette } from 'lucide-react';
 import BatchExportModal from '../components/tips/BatchExportModal';
 import CustomPDFGenerator from '../components/tips/CustomPDFGenerator';
-import ImageWithFallback from '../components/common/ImageWithFallback';
-import { 
-  ImprovedCoverPage, 
-  ImprovedBenefitsPage, 
-  ImprovedImplementationPage,
-  ImprovedProgressPage,
-  ImprovedCTAPage
-} from '../components/tips/ImprovedTemplatePages';
+import ExportDownloadModal from '../components/tips/ExportDownloadModal';
 import { ImprovedSinglePageTemplate } from '../components/tips/ImprovedSinglePageTemplate';
+import {
+    ImprovedBenefitsPage, ImprovedCoverPage, ImprovedCTAPage, ImprovedImplementationPage,
+    ImprovedProgressPage
+} from '../components/tips/ImprovedTemplatePages';
 
 interface MockTip {
   id: number;

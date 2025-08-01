@@ -1,31 +1,16 @@
-import React, { useState } from 'react';
-import { DatabaseTip } from '../../services/tipsDatabaseService';
-import { trackTipDownload, trackTipShare } from '../../services/analyticsService';
-import { 
-  Clock, 
-  Star, 
-  Share2, 
-  Bookmark, 
-  Download, 
-  CheckCircle, 
-  TrendingUp,
-  Heart,
-  MessageCircle,
-  Eye,
-  Calendar,
-  Tag,
-  User,
-  ArrowLeft,
-  ExternalLink,
-  Copy,
-  CheckCheck
+import {
+    ArrowLeft, Calendar, CheckCheck, CheckCircle, Clock, Copy, Download, ExternalLink, Eye, Heart,
+    MessageCircle, Share2, Star, Tag, TrendingUp, User
 } from 'lucide-react';
+import React, { useState } from 'react';
+import { trackTipDownload, trackTipShare } from '../../services/analyticsService';
+import { handlePDFDownloadWithEmail } from '../../services/emailService';
 import { PDFGenerator } from '../../services/pdfGenerator';
-import SEOHead from '../common/SEOHead';
-import RelatedTipsSection from './RelatedTipsSection';
-import EmailCaptureModal from '../email/EmailCaptureModal';
+import { DatabaseTip } from '../../services/tipsDatabaseService';
 import BookmarkButton from '../bookmarks/BookmarkButton';
-import { emailService, handlePDFDownloadWithEmail } from '../../services/emailService';
+import SEOHead from '../common/SEOHead';
+import EmailCaptureModal from '../email/EmailCaptureModal';
+import RelatedTipsSection from './RelatedTipsSection';
 
 interface TipWebPageProps {
   tip: DatabaseTip;

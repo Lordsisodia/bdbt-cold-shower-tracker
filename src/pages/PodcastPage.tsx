@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import Navigation from '../components/landing/Navigation';
-import Footer from '../components/landing/Footer';
-import { Play, Pause, Volume2, Clock, Calendar, Headphones, Youtube, Podcast as PodcastIcon, Share2, Heart, Download, TrendingUp, Mic, Filter } from 'lucide-react';
-import { podcastService, type PodcastEpisode, type EpisodeFilters, type PodcastStats } from '../services/podcastService';
 import { format } from 'date-fns';
+import { Calendar, Clock, Download, Headphones, Heart, Mic, Pause, Play, Podcast as PodcastIcon, Share2, TrendingUp, Volume2, Youtube } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import Footer from '../components/landing/Footer';
+import Navigation from '../components/landing/Navigation';
+import { podcastService, type EpisodeFilters, type PodcastEpisode, type PodcastStats } from '../services/podcastService';
 
 const PodcastPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'mindset' | 'business' | 'health' | 'relationships'>('all');

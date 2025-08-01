@@ -1,8 +1,8 @@
+import { AlertCircle, ArrowLeft, CheckCircle, Mail, RefreshCw } from 'lucide-react';
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Mail, ArrowLeft, AlertCircle, CheckCircle, RefreshCw } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
 import { Button, Card } from '../../components/ui';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface LocationState {
   email?: string;

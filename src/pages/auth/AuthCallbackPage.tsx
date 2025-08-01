@@ -1,8 +1,8 @@
+import { AlertCircle, CheckCircle, Loader } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { CheckCircle, AlertCircle, Loader } from 'lucide-react';
+import { Button, Card } from '../../components/ui';
 import { useAuth } from '../../contexts/AuthContext';
-import { Card, Button } from '../../components/ui';
 
 const AuthCallbackPage: React.FC = () => {
   const navigate = useNavigate();

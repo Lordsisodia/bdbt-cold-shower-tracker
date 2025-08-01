@@ -1,23 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Mail, 
-  Users, 
-  TrendingUp, 
-  Send, 
-  Edit, 
-  Eye, 
-  Plus,
-  BarChart3,
-  Settings,
-  Download,
-  Target,
-  Zap
+import {
+    BarChart3, Download, Edit,
+    Eye, Mail, Plus, Send, Settings, Target, TrendingUp, Users, Zap
 } from 'lucide-react';
-import { 
-  newsletterService, 
-  NewsletterAnalytics, 
-  NewsletterCampaign, 
-  NewsletterSubscriber 
+import React, { useEffect, useState } from 'react';
+import {
+    NewsletterAnalytics,
+    NewsletterCampaign, newsletterService, NewsletterSubscriber
 } from '../../services/newsletterService';
 
 const NewsletterDashboard: React.FC = () => {

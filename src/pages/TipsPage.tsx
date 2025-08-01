@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import Navigation from '../components/landing/Navigation';
+import { BookOpen, ChevronDown, Clock, Filter, Search, Star } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../components/landing/Footer';
-import { Download, Clock, ChevronDown, Search, Filter, BookOpen, Star } from 'lucide-react';
-import { downloadTip } from '../utils/downloadUtils';
-import { DatabaseTip, tipsDatabaseService } from '../services/tipsDatabaseService';
+import Navigation from '../components/landing/Navigation';
 import TagFilterSystem from '../components/tips/TagFilterSystem';
-import { trackTipView, trackTipDownload, trackSearch, trackFilter } from '../services/analyticsService';
+import { trackFilter, trackSearch, trackTipView } from '../services/analyticsService';
+import { DatabaseTip, tipsDatabaseService } from '../services/tipsDatabaseService';
 
 interface Tip {
   id: string;

@@ -1,5 +1,5 @@
-import { DatabaseTip } from './tipsDatabaseService';
 import { GrokEnhancedTip } from './grokApiService';
+import { DatabaseTip } from './tipsDatabaseService';
 
 export class WebPageGenerator {
   // Generate a complete tip landing page

@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { RealTip, generateCompleteTipDatabase } from '../data/realTipsCollection';
+import { generateCompleteTipDatabase, RealTip } from '../data/realTipsCollection';
 import { createConfiguredSupabaseClient, getMockData } from '../utils/supabaseConfig';
 
 // Supabase client setup with fallback

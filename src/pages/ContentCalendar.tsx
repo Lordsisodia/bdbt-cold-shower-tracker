@@ -1,29 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import Navigation from '../components/landing/Navigation';
-import Footer from '../components/landing/Footer';
-import { calendarService, CalendarEvent } from '../services/calendarService';
-import { 
-  Calendar as CalendarIcon, 
-  ChevronLeft, 
-  ChevronRight, 
-  Plus,
-  Filter,
-  Settings,
-  Download,
-  Upload,
-  Clock,
-  Eye,
-  Edit,
-  Trash2,
-  CheckCircle,
-  AlertCircle,
-  Star,
-  TrendingUp,
-  Heart,
-  Target,
-  Loader,
-  RefreshCw
+import {
+    AlertCircle, Calendar as CalendarIcon, CheckCircle, ChevronLeft,
+    ChevronRight, Clock, Download, Edit, Eye, Loader, Plus, RefreshCw, Star, Target, TrendingUp, Upload
 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import Footer from '../components/landing/Footer';
+import Navigation from '../components/landing/Navigation';
+import { CalendarEvent, calendarService } from '../services/calendarService';
 
 const ContentCalendar: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());

@@ -1,7 +1,7 @@
-import { tipsDatabaseService, DatabaseTip } from './tipsDatabaseService';
-import { grokApiService, GrokEnhancedTip } from './grokApiService';
 import { canvaService } from './canvaIntegration';
+import { grokApiService, GrokEnhancedTip } from './grokApiService';
 import { pdfGenerator } from './pdfGenerator';
+import { DatabaseTip, tipsDatabaseService } from './tipsDatabaseService';
 import { webPageGenerator } from './webPageGenerator';
 
 export interface BatchProcessingConfig {

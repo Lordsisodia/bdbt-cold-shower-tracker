@@ -1,6 +1,6 @@
-import { DatabaseTip } from './tipsDatabaseService';
-import { enhancedGrokService, ComprehensiveEnhancedContent } from './enhancedGrokService';
+import { ComprehensiveEnhancedContent, enhancedGrokService } from './enhancedGrokService';
 import { enhancedPdfGenerator } from './enhancedPdfGenerator';
+import { DatabaseTip } from './tipsDatabaseService';
 
 /**
  * Integration Manager

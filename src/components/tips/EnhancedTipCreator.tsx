@@ -1,19 +1,11 @@
-import React, { useState } from 'react';
-import { tipsDatabaseService, DatabaseTip } from '../../services/tipsDatabaseService';
-import { grokApiService } from '../../services/grokApiService';
-import { 
-  Wand2, 
-  Save, 
-  Clock,
-  DollarSign,
-  Hash,
-  TrendingUp,
-  Heart,
-  Star,
-  Loader,
-  CheckCircle,
-  AlertCircle
+import {
+    AlertCircle, CheckCircle, Clock,
+    DollarSign,
+    Hash, Heart, Loader, Save, Star, TrendingUp, Wand2
 } from 'lucide-react';
+import React, { useState } from 'react';
+import { grokApiService } from '../../services/grokApiService';
+import { DatabaseTip, tipsDatabaseService } from '../../services/tipsDatabaseService';
 
 
 interface TipFormData {

@@ -1,7 +1,7 @@
+import { BookOpen, CheckCircle, Clock, Download, Star, Target, TrendingUp, Zap } from 'lucide-react';
 import React from 'react';
-import Navigation from '../components/landing/Navigation';
 import Footer from '../components/landing/Footer';
-import { Star, Download, Clock, FileText, CheckCircle, TrendingUp, Target, Zap, ArrowRight, BookOpen, Users } from 'lucide-react';
+import Navigation from '../components/landing/Navigation';
 import { downloadBlueprint } from '../utils/downloadUtils';
 
 const BlueprintPage: React.FC = () => {

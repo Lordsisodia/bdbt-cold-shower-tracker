@@ -1,16 +1,7 @@
-import { supabase } from '../lib/supabase';
-import type { 
-  User, 
-  Session, 
-  AuthError, 
-  SignUpWithPasswordCredentials,
-  SignInWithPasswordCredentials,
-  OAuthResponse,
-  AuthResponse,
-  UserResponse,
-  WeakPassword 
+import type {
+    AuthError, AuthResponse, OAuthResponse, Session, SignInWithPasswordCredentials, SignUpWithPasswordCredentials, User, UserResponse
 } from '@supabase/supabase-js';
-import { profileAPI } from '../lib/supabase';
+import { profileAPI, supabase } from '../lib/supabase';
 
 export interface AuthUser extends User {
   user_metadata?: {

@@ -1,45 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import Navigation from '../components/landing/Navigation';
+import React, { useEffect, useState } from 'react';
 import Footer from '../components/landing/Footer';
+import Navigation from '../components/landing/Navigation';
 // PdfTemplatePreview component removed - using CustomPDFGenerator instead
-import { tipsDatabaseService, DatabaseTip } from '../services/tipsDatabaseService';
-import { trackPageView } from '../services/analyticsService';
-import { 
-  BarChart3, 
-  Calendar, 
-  FileText, 
-  CheckCircle, 
-  Clock, 
-  Lightbulb,
-  TrendingUp,
-  Users,
-  Download,
-  Plus,
-  Filter,
-  Search,
-  Eye,
-  Edit,
-  Trash2,
-  Mic,
-  Upload,
-  Star,
-  Loader,
-  AlertCircle,
-  FileImage,
-  Palette,
-  CheckCircle2,
-  XCircle,
-  Globe,
-  FileText as FileTextIcon,
-  ChevronLeft,
-  ChevronRight,
-  MoreVertical,
-  SortAsc,
-  SortDesc,
-  X,
-  RefreshCw,
-  ExternalLink
+import {
+    AlertCircle, BarChart3,
+    Calendar, CheckCircle, CheckCircle2, ChevronLeft,
+    ChevronRight, Clock, Download, Edit, ExternalLink, Eye, FileImage, FileText, Lightbulb, Loader, Mic, Palette, Plus, Search, SortAsc,
+    SortDesc, Star, Trash2, TrendingUp, Upload, X, XCircle
 } from 'lucide-react';
+import { DatabaseTip, tipsDatabaseService } from '../services/tipsDatabaseService';
 
 interface DashboardStats {
   totalTips: number;

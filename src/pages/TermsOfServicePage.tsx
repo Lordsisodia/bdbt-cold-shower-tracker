@@ -1,6 +1,6 @@
+import { AlertCircle, ArrowLeft, FileText, Shield, Users } from 'lucide-react';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { ArrowLeft, Shield, FileText, AlertCircle, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const TermsOfServicePage: React.FC = () => {

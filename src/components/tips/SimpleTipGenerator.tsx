@@ -1,5 +1,5 @@
+import { AlertCircle, CheckCircle, Download, Eye, Loader, Wand2 } from 'lucide-react';
 import React, { useState } from 'react';
-import { Wand2, Loader, CheckCircle, AlertCircle, Download, Eye } from 'lucide-react';
 import { enhancedGrokService } from '../../services/enhancedGrokService';
 import { exportService } from '../../services/exportService';
 import { DatabaseTip } from '../../services/tipsDatabaseService';

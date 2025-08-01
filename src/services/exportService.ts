@@ -1,9 +1,9 @@
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { DatabaseTip } from './tipsDatabaseService';
-import { enhancedGrokService, ComprehensiveEnhancedContent } from './enhancedGrokService';
+import { CanvaDesignData, canvaService } from './canvaIntegration';
+import { ComprehensiveEnhancedContent, enhancedGrokService } from './enhancedGrokService';
 import { integrationManager } from './integrationManager';
-import { canvaService, CanvaDesignData } from './canvaIntegration';
+import { DatabaseTip } from './tipsDatabaseService';
 
 export interface ExportOptions {
   format: 'pdf' | 'png' | 'jpg' | 'json' | 'markdown' | 'html' | 'docx' | 'csv' | 'canva';

@@ -1,5 +1,5 @@
-import { supabase, checkSupabaseConnection, handleDatabaseError, retryOperation } from '../services/supabaseClient';
-import type { TrackedDay, UserProfile, Achievement } from './supabase';
+import { checkSupabaseConnection, handleDatabaseError, retryOperation, supabase } from '../services/supabaseClient';
+import type { Achievement, TrackedDay, UserProfile } from './supabase';
 
 // API Response Types
 export interface ApiResponse<T> {

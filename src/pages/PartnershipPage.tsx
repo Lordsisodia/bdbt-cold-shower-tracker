@@ -1,8 +1,8 @@
+import { ArrowRight, Building, CheckCircle, Globe, Heart, Loader, Mail, Phone, Rocket, Star, Target, Users } from 'lucide-react';
 import React, { useState } from 'react';
-import Navigation from '../components/landing/Navigation';
 import Footer from '../components/landing/Footer';
-import { Users, Rocket, Target, Star, CheckCircle, Globe, Heart, Mail, Phone, Building, ArrowRight, Loader } from 'lucide-react';
-import { submitContact, validateEmail, showSuccessToast, showErrorToast } from '../utils/formUtils';
+import Navigation from '../components/landing/Navigation';
+import { showErrorToast, showSuccessToast, submitContact, validateEmail } from '../utils/formUtils';
 
 interface PartnershipType {
   id: string;

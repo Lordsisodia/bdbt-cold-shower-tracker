@@ -1,6 +1,5 @@
-import { batchProcessingService, BatchProcessingConfig } from './batchProcessingService';
+import { BatchProcessingConfig, batchProcessingService } from './batchProcessingService';
 import { tipsDatabaseService } from './tipsDatabaseService';
-import { grokApiService } from './grokApiService';
 
 export interface PipelineConfig {
   // Input configuration

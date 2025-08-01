@@ -1,20 +1,18 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Tip, TipCategory, TipDifficulty, TipFilter } from '../../types/tip';
-import { tipsService } from '../../services/tipsService';
+import {
+    ChevronLeft,
+    ChevronRight,
+    Download, Filter,
+    Grid,
+    List, Search
+} from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { pdfGenerator } from '../../services/pdfGenerator';
-import { TipCard } from './TipCard';
-import { TipDetail } from './TipDetail';
+import { tipsService } from '../../services/tipsService';
+import { Tip, TipCategory, TipDifficulty, TipFilter } from '../../types/tip';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
-import { 
-  Search, 
-  Filter, 
-  Grid, 
-  List,
-  ChevronLeft,
-  ChevronRight,
-  Download
-} from 'lucide-react';
+import { TipCard } from './TipCard';
+import { TipDetail } from './TipDetail';
 
 type ViewMode = 'grid' | 'list';
 type SortBy = 'newest' | 'popular' | 'trending' | 'readTime';

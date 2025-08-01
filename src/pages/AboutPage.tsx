@@ -1,7 +1,7 @@
+import { Award, Heart, Sparkles, Star, Target, TrendingUp, Users } from 'lucide-react';
 import React from 'react';
-import Navigation from '../components/landing/Navigation';
 import Footer from '../components/landing/Footer';
-import { Users, Heart, Star, Target, TrendingUp, Award, Sparkles, Calendar } from 'lucide-react';
+import Navigation from '../components/landing/Navigation';
 
 const AboutPage: React.FC = () => {
   const coreValues = [

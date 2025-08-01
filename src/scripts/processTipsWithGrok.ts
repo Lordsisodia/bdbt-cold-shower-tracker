@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-import { pipelineManager, PipelineConfig } from '../services/unifiedPipelineManager';
+import chalk from 'chalk';
 import { program } from 'commander';
 import * as dotenv from 'dotenv';
-import chalk from 'chalk';
 import ora from 'ora';
 import { batchProcessingService } from '../services/batchProcessingService';
+import { PipelineConfig, pipelineManager } from '../services/unifiedPipelineManager';
 
 // Load environment variables
 dotenv.config();

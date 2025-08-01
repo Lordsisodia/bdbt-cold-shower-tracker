@@ -1,35 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  TrendingUp, 
-  Users, 
-  Eye, 
-  Download, 
-  Calendar,
-  ArrowUp,
-  ArrowDown,
-  Activity,
-  DollarSign,
-  Heart,
-  MessageCircle,
-  Share2,
-  Clock,
-  BarChart3,
-  PieChart,
-  LineChart,
-  Filter,
-  ChevronDown,
-  Loader2
+import {
+    ArrowDown, ArrowUp, DollarSign, Download, Eye, Loader2, TrendingUp,
+    Users
 } from 'lucide-react';
-import { 
-  analyticsService, 
-  trackPageView,
-  DashboardMetrics,
-  ContentPerformance,
-  CategoryDistribution,
-  EngagementData,
-  UserDemographic,
-  GeographicData,
-  AnalyticsFilters
+import React, { useEffect, useState } from 'react';
+import {
+    AnalyticsFilters, analyticsService, CategoryDistribution, ContentPerformance, DashboardMetrics, EngagementData, GeographicData, trackPageView, UserDemographic
 } from '../services/analyticsService';
 
 interface MetricCard {

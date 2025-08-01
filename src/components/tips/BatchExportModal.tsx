@@ -1,6 +1,6 @@
+import { AlertCircle, CheckCircle, Loader, Package, X } from 'lucide-react';
 import React, { useState } from 'react';
-import { X, Package, CheckCircle, Loader, AlertCircle } from 'lucide-react';
-import { exportService, ExportOptions, ExportResult } from '../../services/exportService';
+import { ExportOptions, ExportResult, exportService } from '../../services/exportService';
 import { DatabaseTip } from '../../services/tipsDatabaseService';
 
 interface BatchExportModalProps {

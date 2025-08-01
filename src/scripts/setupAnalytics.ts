@@ -10,10 +10,10 @@
  * 4. Testing the analytics integration
  */
 
-import { supabase } from '../lib/supabase';
-import { testAnalyticsIntegration } from '../utils/testAnalytics';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { supabase } from '../lib/supabase';
+import { testAnalyticsIntegration } from '../utils/testAnalytics';
 
 async function setupAnalyticsDatabase() {
   console.log('🚀 Setting up analytics database...');

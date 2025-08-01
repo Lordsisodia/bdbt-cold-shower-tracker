@@ -1,5 +1,5 @@
+import { Check, Gift, Mail, Sparkles, X, Zap } from 'lucide-react';
 import React, { useState } from 'react';
-import { Mail, Check, X, Sparkles, Gift, Zap } from 'lucide-react';
 import { newsletterService } from '../../services/newsletterService';
 
 interface NewsletterSubscriptionWidgetProps {

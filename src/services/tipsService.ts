@@ -1,5 +1,5 @@
-import { Tip, TipFilter, TipStats, TipCategory, TipDifficulty } from '../types/tip';
 import { generateTips } from '../data/tipGenerator';
+import { Tip, TipCategory, TipDifficulty, TipFilter, TipStats } from '../types/tip';
 
 class TipsService {
   private tips: Tip[] = [];

@@ -1,16 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { emailService, EmailStats } from '../services/emailService';
-import { 
-  Mail, 
-  Users, 
-  TrendingUp, 
-  Download,
-  Calendar,
-  Activity,
-  BarChart3,
-  PieChart,
-  Loader2
+import {
+    Activity,
+    BarChart3, Calendar, Download, Loader2, Mail, PieChart, TrendingUp, Users
 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { emailService, EmailStats } from '../services/emailService';
 
 const EmailStatsPage: React.FC = () => {
   const [stats, setStats] = useState<EmailStats | null>(null);

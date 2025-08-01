@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { DatabaseTip, tipsDatabaseService } from '../../services/tipsDatabaseService';
-import { 
-  ArrowRight, 
-  Clock, 
-  Star,
-  TrendingUp,
-  Eye
+import {
+    ArrowRight,
+    Clock, Eye, Star,
+    TrendingUp
 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { DatabaseTip, tipsDatabaseService } from '../../services/tipsDatabaseService';
 
 interface RelatedTipsSectionProps {
   currentTip: DatabaseTip;

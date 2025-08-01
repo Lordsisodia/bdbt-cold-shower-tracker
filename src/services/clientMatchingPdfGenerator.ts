@@ -1,7 +1,7 @@
 import jsPDF from 'jspdf';
-import { DatabaseTip } from './tipsDatabaseService';
 import { GrokEnhancedTip } from './grokApiService';
-import { imageService, ImageResult } from './imageService';
+import { ImageResult, imageService } from './imageService';
+import { DatabaseTip } from './tipsDatabaseService';
 
 export class ClientMatchingPDFGenerator {
   private doc: jsPDF;

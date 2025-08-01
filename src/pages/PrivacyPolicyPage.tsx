@@ -1,6 +1,6 @@
+import { ArrowLeft, Cookie, Database, Eye, Globe, Lock, Shield, UserCheck } from 'lucide-react';
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { ArrowLeft, Shield, Eye, Lock, Database, Globe, Cookie, UserCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const PrivacyPolicyPage: React.FC = () => {

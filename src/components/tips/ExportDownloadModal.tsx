@@ -1,6 +1,6 @@
+import { AlertCircle, CheckCircle, Database, Download, FileSpreadsheet, FileText, Globe, Image, Loader, Palette, X } from 'lucide-react';
 import React, { useState } from 'react';
-import { X, Download, FileText, Image, Database, Globe, FileSpreadsheet, CheckCircle, Loader, AlertCircle, Palette } from 'lucide-react';
-import { exportService, ExportOptions, ExportResult } from '../../services/exportService';
+import { ExportOptions, ExportResult, exportService } from '../../services/exportService';
 import { DatabaseTip } from '../../services/tipsDatabaseService';
 import CanvaAuthButton from '../canva/CanvaAuthButton';
 

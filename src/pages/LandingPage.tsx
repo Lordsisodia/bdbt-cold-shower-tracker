@@ -1,11 +1,11 @@
 import React from 'react';
-import Navigation from '../components/landing/Navigation';
+import CTASection from '../components/landing/CTASection';
+import FeaturesGrid from '../components/landing/FeaturesGrid';
+import Footer from '../components/landing/Footer';
 import HeroSection from '../components/landing/HeroSection';
 import MissionSection from '../components/landing/MissionSection';
-import FeaturesGrid from '../components/landing/FeaturesGrid';
+import Navigation from '../components/landing/Navigation';
 import SuccessStories from '../components/landing/SuccessStories';
-import CTASection from '../components/landing/CTASection';
-import Footer from '../components/landing/Footer';
 
 const LandingPage: React.FC = () => {
   return (

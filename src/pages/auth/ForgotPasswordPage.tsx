@@ -1,8 +1,8 @@
+import { AlertCircle, ArrowLeft, CheckCircle, Mail } from 'lucide-react';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, ArrowLeft, AlertCircle, CheckCircle } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
 import { Button, Card } from '../../components/ui';
+import { useAuth } from '../../contexts/AuthContext';
 
 const ForgotPasswordPage: React.FC = () => {
   const { resetPassword, validateEmail, isLoading } = useAuth();

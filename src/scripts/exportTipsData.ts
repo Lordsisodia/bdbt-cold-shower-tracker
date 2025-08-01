@@ -1,6 +1,6 @@
-import { generateTips } from '../data/tipGenerator';
 import fs from 'fs';
 import path from 'path';
+import { generateTips } from '../data/tipGenerator';
 
 // Generate all tips
 const tips = generateTips();

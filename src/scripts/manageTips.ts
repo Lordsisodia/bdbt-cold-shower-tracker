@@ -1,8 +1,8 @@
-import { generateCompleteTipDatabase, RealTip } from '../data/realTipsCollection';
-import { tipsDatabaseService } from '../services/tipsDatabaseService';
-import { canvaService } from '../services/canvaIntegration';
 import * as fs from 'fs';
 import * as path from 'path';
+import { generateCompleteTipDatabase } from '../data/realTipsCollection';
+import { canvaService } from '../services/canvaIntegration';
+import { tipsDatabaseService } from '../services/tipsDatabaseService';
 
 // Command line interface for managing tips
 const command = process.argv[2];

@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
-import { DatabaseTip } from './tipsDatabaseService';
 import { GrokEnhancedTip } from './grokApiService';
+import { DatabaseTip } from './tipsDatabaseService';
 
 export class EnhancedPDFGenerator {
   private doc: jsPDF;

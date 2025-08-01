@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import Navigation from '../components/landing/Navigation';
+import { AlertCircle, ArrowLeft, Loader } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Footer from '../components/landing/Footer';
+import Navigation from '../components/landing/Navigation';
 import TipWebPage from '../components/tips/TipWebPage';
-import { tipsDatabaseService, DatabaseTip } from '../services/tipsDatabaseService';
-import { Loader, AlertCircle, ArrowLeft } from 'lucide-react';
+import { DatabaseTip, tipsDatabaseService } from '../services/tipsDatabaseService';
 
 const TipDetailPage: React.FC = () => {
   const { tipId } = useParams<{ tipId: string }>();

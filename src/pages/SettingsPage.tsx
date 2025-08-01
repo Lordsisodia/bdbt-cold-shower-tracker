@@ -1,27 +1,8 @@
-import React, { useState } from 'react';
-import { 
-  Settings,
-  User,
-  Bell,
-  Shield,
-  Palette,
-  Globe,
-  Key,
-  Mail,
-  Smartphone,
-  CreditCard,
-  Database,
-  Zap,
-  Save,
-  Check,
-  AlertCircle,
-  Eye,
-  EyeOff,
-  Upload,
-  Download,
-  RefreshCw,
-  Loader
+import {
+    Bell, Check, Database, Download, Eye,
+    EyeOff, Loader, Palette, RefreshCw, Save, Shield, Smartphone, Upload, User, Zap
 } from 'lucide-react';
+import React, { useState } from 'react';
 
 interface SettingSection {
   id: string;

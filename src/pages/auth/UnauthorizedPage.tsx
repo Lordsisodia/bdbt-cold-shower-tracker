@@ -1,8 +1,8 @@
+import { ArrowLeft, Home, Shield, User } from 'lucide-react';
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Shield, ArrowLeft, Home, User } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
 import { Button, Card } from '../../components/ui';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface LocationState {
   requiredRole?: string;

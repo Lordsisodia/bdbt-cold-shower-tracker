@@ -1,28 +1,11 @@
 import React from 'react';
-import { 
-  FaHeart, FaBrain, FaDumbbell, FaChartLine, FaRocket, FaTrophy,
-  FaCheckCircle, FaLightbulb, FaCalendarCheck, FaClock, FaDollarSign,
-  FaStar, FaUserCheck, FaHandHoldingHeart, FaMedal, FaFire,
-  FaShieldAlt, FaGem, FaLeaf, FaSun, FaMoon, FaWater,
-  FaRunning, FaMountain, FaSmile, FaBook, FaPuzzlePiece,
-  FaBalanceScale, FaCompass, FaFlag, FaGift, FaSeedling
+import { BiCalendarEvent, BiHappyBeaming, BiTargetLock, BiTimer, BiTrendingUp } from 'react-icons/bi';
+import {
+    FaBalanceScale, FaCalendarCheck, FaChartLine, FaCheckCircle, FaClock, FaCompass, FaDollarSign, FaFire, FaGem, FaHeart, FaLeaf, FaLightbulb, FaMountain, FaRocket, FaSeedling, FaSmile, FaStar, FaSun, FaTrophy, FaUserCheck
 } from 'react-icons/fa';
-import { 
-  BiTargetLock, BiTimer, BiTrendingUp, BiHappyBeaming,
-  BiHealth, BiMoney, BiTime, BiCalendarEvent
-} from 'react-icons/bi';
-import { 
-  GiStairsGoal, GiProgression, GiMeditation, GiHealthNormal,
-  GiMoneyStack, GiHappySkull, GiFlame, GiWaterDrop
-} from 'react-icons/gi';
-import { 
-  MdTimeline, MdAutoGraph, MdVerified, MdTipsAndUpdates,
-  MdSelfImprovement, MdPsychology, MdFitnessCenter
-} from 'react-icons/md';
-import { 
-  RiMentalHealthLine, RiEmotionHappyLine, RiMoneyDollarCircleLine,
-  RiHeartPulseFill, RiPlantFill, RiSunFill
-} from 'react-icons/ri';
+import { GiHealthNormal, GiProgression, GiStairsGoal } from 'react-icons/gi';
+import { MdAutoGraph, MdSelfImprovement, MdTimeline } from 'react-icons/md';
+import { RiEmotionHappyLine, RiHeartPulseFill, RiMentalHealthLine, RiPlantFill } from 'react-icons/ri';
 
 interface TemplatePageProps {
   tip: any;

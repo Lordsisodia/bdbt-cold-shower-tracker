@@ -1,4 +1,4 @@
-import { emailService, EmailSubscription } from './emailService';
+import { emailService } from './emailService';
 
 export interface NewsletterSubscriber {
   id: string;

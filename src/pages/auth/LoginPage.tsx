@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, Github, Chrome, ArrowLeft, AlertCircle, CheckCircle } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
+import { AlertCircle, ArrowLeft, CheckCircle, Chrome, Eye, EyeOff, Github, Lock, Mail } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Card, LoadingSpinner } from '../../components/ui';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface LocationState {
   from?: { pathname: string };

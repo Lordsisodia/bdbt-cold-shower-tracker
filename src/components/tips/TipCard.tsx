@@ -1,9 +1,9 @@
+import { ChevronRight, Clock, Download, Eye } from 'lucide-react';
 import React from 'react';
 import { Tip } from '../../types/tip';
-import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
-import { Clock, Download, Eye, ChevronRight } from 'lucide-react';
+import { Card } from '../ui/Card';
 
 interface TipCardProps {
   tip: Tip;

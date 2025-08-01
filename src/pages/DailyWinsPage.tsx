@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import Navigation from '../components/landing/Navigation';
-import Footer from '../components/landing/Footer';
-import { Trophy, TrendingUp, Heart, MessageCircle, Share2, CheckCircle, Calendar, Users, Sparkles, Plus, Filter, ChevronDown, Award } from 'lucide-react';
-import { dailyWinsService, type DailyWin, type UserProfile, type WinFilters } from '../services/dailyWinsService';
-import { supabase } from '../lib/supabase';
 import { formatDistanceToNow } from 'date-fns';
+import { Award, Calendar, Heart, MessageCircle, Plus, Share2, Sparkles, Trophy, Users } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import Footer from '../components/landing/Footer';
+import Navigation from '../components/landing/Navigation';
+import { supabase } from '../lib/supabase';
+import { dailyWinsService, type DailyWin, type UserProfile, type WinFilters } from '../services/dailyWinsService';
 
 const DailyWinsPage: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState<'recent' | 'popular' | 'following'>('recent');

@@ -1,24 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Bookmark, 
-  Search, 
-  Filter, 
-  Grid, 
-  List, 
-  Archive, 
-  Plus,
-  Folder,
-  Eye,
-  Clock,
-  Tag,
-  MoreVertical,
-  Edit,
-  Trash,
-  Share,
-  ExternalLink,
-  Download
+import {
+    Archive, Bookmark, Clock, ExternalLink, Folder, Grid,
+    List, MoreVertical, Plus, Search, Tag, Trash
 } from 'lucide-react';
-import { bookmarkService, Bookmark as BookmarkType, ReadingList, BookmarkStats } from '../services/bookmarkService';
+import React, { useEffect, useState } from 'react';
+import { Bookmark as BookmarkType, bookmarkService, BookmarkStats, ReadingList } from '../services/bookmarkService';
 import { DatabaseTip, tipsDatabaseService } from '../services/tipsDatabaseService';
 
 const BookmarksPage: React.FC = () => {

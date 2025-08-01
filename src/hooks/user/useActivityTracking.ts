@@ -1,6 +1,6 @@
-import { useEffect, useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { analyticsService, AnalyticsEvent } from '../../services/analyticsService';
+import { AnalyticsEvent, analyticsService } from '../../services/analyticsService';
 
 interface ActivityTrackingOptions {
   enablePageTracking?: boolean;
@@ -246,7 +246,7 @@ export const withActivityTracking = <P extends object>(
 };
 
 // Context provider for global activity tracking
-import React, { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, ReactNode, useContext } from 'react';
 
 interface ActivityTrackingContextValue {
   trackEvent: (eventType: string, metadata: ActivityMetadata) => void;

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { AlertCircle, ArrowLeft, Check, CheckCircle, Chrome, Eye, EyeOff, Github, Lock, Mail, User, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, Eye, EyeOff, Github, Chrome, ArrowLeft, AlertCircle, CheckCircle, Check, X } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
 import { Button, Card, LoadingSpinner } from '../../components/ui';
+import { useAuth } from '../../contexts/AuthContext';
 
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();

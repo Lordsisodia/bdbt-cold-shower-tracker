@@ -1,19 +1,13 @@
+import {
+    ArrowLeft,
+    CheckCircle, Clock, DollarSign, Download,
+    Eye, Heart, Share2, TrendingUp
+} from 'lucide-react';
 import React from 'react';
 import { Tip } from '../../types/tip';
-import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
-import { 
-  Clock, 
-  Download, 
-  Eye, 
-  Share2, 
-  ArrowLeft,
-  CheckCircle,
-  TrendingUp,
-  Heart,
-  DollarSign
-} from 'lucide-react';
+import { Card } from '../ui/Card';
 
 interface TipDetailProps {
   tip: Tip;

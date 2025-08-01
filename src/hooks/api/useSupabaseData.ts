@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
 import { User } from '@supabase/supabase-js';
-import { trackingAPI, profileAPI, offlineAPI, TrackedDay, UserProfile } from '../lib/supabase';
+import { useCallback, useEffect, useState } from 'react';
+import { offlineAPI, profileAPI, TrackedDay, trackingAPI, UserProfile } from '../lib/supabase';
 
 interface SupabaseDataState {
   trackedDays: TrackedDay[];
