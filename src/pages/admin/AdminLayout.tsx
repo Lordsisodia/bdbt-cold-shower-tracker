@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, Users, BarChart3, FileText, 
-  Settings, LogOut, TrendingUp, Shield 
+  Settings, LogOut, TrendingUp, Shield, Zap
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -20,6 +20,7 @@ export const AdminLayout: React.FC = () => {
     { path: '/admin/users', icon: Users, label: 'User Management' },
     { path: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
     { path: '/admin/content', icon: FileText, label: 'Content Management' },
+    { path: '/admin/automation', icon: Zap, label: 'Automation' },
     { path: '/admin/settings', icon: Settings, label: 'Settings' },
   ];
 
