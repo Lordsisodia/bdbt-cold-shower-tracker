@@ -1,19 +1,27 @@
+// API Hooks
+export { useFetch } from './api/useFetch';
+export { useSupabaseData } from './api/useSupabaseData';
+export { useClientData } from './api/useClientData';
+
+// Auth Hooks
+export { useAuth } from './auth/useAuth';
+export { usePermissions } from './auth/usePermissions';
+
+// Form Hooks
+export { useForm } from './form/useForm';
+
+// State Hooks
+export { useLocalStorage } from './state/useLocalStorage';
+export { useTheme } from './state/useTheme';
+
 // UI Hooks
 export { useToast } from './ui/useToast';
 export { useMobile } from './ui/useMobile';
+export { usePagination } from './ui/usePagination';
+export { usePWA } from './ui/usePWA';
 
 // Utility Hooks
-export { useLocalStorage } from './utils/useLocalStorage';
 export { useDebounce } from './utils/useDebounce';
 
-// Client Hooks
-export { useClientData } from './client/useClientData';
-
-// Project Hooks
+// Project Specific Hooks
 export { useTipOperations } from './project/useTipOperations';
-
-// Re-export existing hooks
-export { useAuth } from './useAuth';
-export { usePWA } from './usePWA';
-export { useSupabaseData } from './useSupabaseData';
-export { useTheme } from './useTheme';
