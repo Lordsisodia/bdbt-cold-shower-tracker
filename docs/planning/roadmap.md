@@ -24,7 +24,7 @@
 - Email campaign system
 
 ## Adaptive Tasks
-- AT1: Create tests for Calendar component and shower tracking features
+- AT1: Create tests for SimpleColdShowerApp and SimpleColdShowerTracker components
 - AD1: Document new components and APIs
 - AO1: Bundle size and performance optimization
 
